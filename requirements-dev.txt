@@ -1,0 +1,11 @@
+albumentations
+matplotlib
+numpy
+opencv-python
+pandas
+pillow
+seaborn
+scipy
+sklearn
+torch
+timm
