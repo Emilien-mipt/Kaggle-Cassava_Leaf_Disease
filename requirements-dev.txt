@@ -7,5 +7,6 @@ pillow
 seaborn
 scipy
 sklearn
+tensorboard
 torch
 timm
