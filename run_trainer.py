@@ -31,9 +31,13 @@ def main():
     args = parser.parse_args()
     log_dir_name = args.logdir_name
 
-    # Create directory for logs
-    logger_path = os.path.join(CFG.OUTPUT, log_dir_name)
-    os.makedirs(os.path.join(logger_path))
+    # Path to log
+    logger_path = os.path.join(CFG.OUTPUT_DIR, log_dir_name)
+
+    # Create dir for saving logs and weights
+    print("Creating dir {} for saving logs".format(log_dir_name))
+    os.makedirs(os.path.join(logger_path, "weights"))
+    print("Dir {} has been created!".format(log_dir_name))
 
     # Define logger to save train logs
     LOGGER = init_logger(os.path.join(logger_path, "train.log"))
@@ -42,9 +46,6 @@ def main():
 
     # Set seed
     seed_torch(seed=CFG.seed)
-
-    # Create dir for saving weights
-    os.makedirs(os.path.join(logger_path, "weights"))
 
     LOGGER.info("Reading data...")
     train_df = pd.read_csv("./data/cassava-leaf-disease-classification/train.csv")
@@ -141,20 +142,21 @@ def main():
         LOGGER.info(
             f"Epoch {epoch+1} - avg_train_loss: {avg_train_loss:.4f}  avg_val_loss: {avg_val_loss:.4f}  time: {elapsed:.0f}s"
         )
-        LOGGER.info(f"Epoch {epoch+1} - Accuracy: {val_acc_score}")
+        LOGGER.info(
+            f"Epoch {epoch+1} - Accuracy: {val_acc_score} - F1-score {val_f1_score}"
+        )
 
         if val_acc_score > best_acc_score:
-            best_score = val_acc_score
+            best_acc_score = val_acc_score
             if val_f1_score > best_f1_score:
                 best_f1_score = val_f1_score
-
                 LOGGER.info(
                     f"Epoch {epoch+1} - Save Best Accuracy: {best_acc_score:.4f} - Save Best F1-score: {best_f1_score:.4f} Model"
                 )
                 torch.save(
                     {"model": model.state_dict(), "preds": val_preds},
                     os.path.join(
-                        CFG.OUTPUT_DIR,
+                        logger_path,
                         "weights",
                         f"{CFG.model_name}_epoch{epoch+1}_best.pth",
                     ),
