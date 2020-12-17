@@ -1,3 +1,5 @@
+import argparse
+import os
 import time
 
 import numpy as np
@@ -7,21 +9,42 @@ import torch.nn as nn
 from sklearn.model_selection import train_test_split
 from torch.optim import Adam
 from torch.utils.data import DataLoader
-
 from torch.utils.tensorboard import SummaryWriter
 
 from augmentations import get_transforms
 from config import CFG
-from train_test_dataset import TrainDataset
 from model import CustomModel
 from train import train_fn, valid_fn
+from train_test_dataset import TrainDataset
 from utils.utils import get_score, init_logger, seed_torch
 
 
 def main():
-    LOGGER = init_logger("train.log")
-    tb = SummaryWriter(CFG.OUTPUT_DIR)
+    parser = argparse.ArgumentParser(
+        description="Parse the argument to define the train log dir name"
+    )
+    parser.add_argument(
+        "--logdir_name",
+        type=str,
+        help="Name of the dir to save train logs",
+    )
+    args = parser.parse_args()
+    log_dir_name = args.logdir_name
+
+    # Create directory for logs
+    logger_path = os.path.join(CFG.OUTPUT, log_dir_name)
+    os.makedirs(os.path.join(logger_path))
+
+    # Define logger to save train logs
+    LOGGER = init_logger(os.path.join(logger_path, "train.log"))
+    # Write to tensorboard
+    tb = SummaryWriter(logger_path)
+
+    # Set seed
     seed_torch(seed=CFG.seed)
+
+    # Create dir for saving weights
+    os.makedirs(os.path.join(logger_path, "weights"))
 
     LOGGER.info("Reading data...")
     train_df = pd.read_csv("./data/cassava-leaf-disease-classification/train.csv")
@@ -32,7 +55,7 @@ def main():
         train_df["label"],
         test_size=0.2,
         random_state=CFG.seed,
-        shuffle = True,
+        shuffle=True,
         stratify=train_df["label"],
     )
 
@@ -95,7 +118,7 @@ def main():
         start_time = time.time()
 
         # train
-        avg_train_loss, train_score = train_fn(
+        avg_train_loss, train_acc = train_fn(
             train_loader, model, criterion, optimizer, epoch, device
         )
 
@@ -104,32 +127,40 @@ def main():
         valid_labels = valid_fold[CFG.target_col].values
 
         # scoring on validation set
-        val_acc_score = get_score(valid_labels, val_preds.argmax(1), metric='accuracy')
-        val_f1_score = get_score(valid_labels, val_preds.argmax(1), metric='f1_score')
+        val_acc_score = get_score(valid_labels, val_preds.argmax(1), metric="accuracy")
+        val_f1_score = get_score(valid_labels, val_preds.argmax(1), metric="f1_score")
 
-        tb.add_scalar("Train Loss", avg_train_loss, epoch+1)
-        tb.add_scalar("Train accuracy", train_score, epoch+1)
-        tb.add_scalar("Val Loss", avg_val_loss, epoch+1)
-        tb.add_scalar("Val accuracy score", val_acc_score, epoch+1)
-        tb.add_scalar("Val f1 score", val_f1_score, epoch+1)
+        tb.add_scalar("Train Loss", avg_train_loss, epoch + 1)
+        tb.add_scalar("Train accuracy", train_acc, epoch + 1)
+        tb.add_scalar("Val Loss", avg_val_loss, epoch + 1)
+        tb.add_scalar("Val accuracy score", val_acc_score, epoch + 1)
+        tb.add_scalar("Val f1 score", val_f1_score, epoch + 1)
 
         elapsed = time.time() - start_time
 
         LOGGER.info(
             f"Epoch {epoch+1} - avg_train_loss: {avg_train_loss:.4f}  avg_val_loss: {avg_val_loss:.4f}  time: {elapsed:.0f}s"
         )
-        LOGGER.info(f"Epoch {epoch+1} - Accuracy: {val_score}")
+        LOGGER.info(f"Epoch {epoch+1} - Accuracy: {val_acc_score}")
 
         if val_acc_score > best_acc_score:
             best_score = val_acc_score
             if val_f1_score > best_f1_score:
                 best_f1_score = val_f1_score
-                LOGGER.info(f"Epoch {epoch+1} - Save Best Accuracy: {best_acc_score:.4f} - Save Best F1-score: {best_f1_score:.4f} Model")
+
+                LOGGER.info(
+                    f"Epoch {epoch+1} - Save Best Accuracy: {best_acc_score:.4f} - Save Best F1-score: {best_f1_score:.4f} Model"
+                )
                 torch.save(
                     {"model": model.state_dict(), "preds": val_preds},
-                    CFG.OUTPUT_DIR + f"{CFG.model_name}_epoch{epoch+1}_best.pth",
+                    os.path.join(
+                        CFG.OUTPUT_DIR,
+                        "weights",
+                        f"{CFG.model_name}_epoch{epoch+1}_best.pth",
+                    ),
                 )
     tb.close()
+
 
 if __name__ == "__main__":
     main()
