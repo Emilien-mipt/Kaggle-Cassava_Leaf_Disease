@@ -7,3 +7,6 @@
 # Pycharm cache
 .idea/
 __pycache__/
+
+# weights
+/weights
