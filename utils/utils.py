@@ -6,11 +6,14 @@ from logging import INFO, FileHandler, Formatter, StreamHandler, getLogger
 
 import numpy as np
 import torch
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, f1_score
 
 
-def get_score(y_true, y_pred):
-    return accuracy_score(y_true, y_pred)
+def get_score(y_true, y_pred, metric):
+    if metric == 'accuracy':
+        return accuracy_score(y_true, y_pred)
+    if metric == 'f1_score':
+        return f1_score(y_true, y_pred, average='weighted')
 
 
 def init_logger(log_file_name):

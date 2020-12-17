@@ -12,7 +12,7 @@ from torch.utils.tensorboard import SummaryWriter
 
 from augmentations import get_transforms
 from config import CFG
-from data_processing import TestDataset, TrainDataset
+from train_test_dataset import TrainDataset
 from model import CustomModel
 from train import train_fn, valid_fn
 from utils.utils import get_score, init_logger, seed_torch
@@ -87,8 +87,8 @@ def main():
     # ====================================================
     criterion = nn.CrossEntropyLoss()
 
-    best_score = 0.0
-    best_loss = np.inf
+    best_acc_score = 0.0
+    best_f1_score = 0.0
 
     for epoch in range(CFG.epochs):
 
@@ -104,12 +104,14 @@ def main():
         valid_labels = valid_fold[CFG.target_col].values
 
         # scoring on validation set
-        val_score = get_score(valid_labels, val_preds.argmax(1))
+        val_acc_score = get_score(valid_labels, val_preds.argmax(1), metric='accuracy')
+        val_f1_score = get_score(valid_labels, val_preds.argmax(1), metric='f1_score')
 
         tb.add_scalar("Train Loss", avg_train_loss, epoch+1)
         tb.add_scalar("Train accuracy", train_score, epoch+1)
         tb.add_scalar("Val Loss", avg_val_loss, epoch+1)
-        tb.add_scalar("Val accuracy", val_score, epoch+1)
+        tb.add_scalar("Val accuracy score", val_acc_score, epoch+1)
+        tb.add_scalar("Val f1 score", val_f1_score, epoch+1)
 
         elapsed = time.time() - start_time
 
@@ -118,13 +120,15 @@ def main():
         )
         LOGGER.info(f"Epoch {epoch+1} - Accuracy: {val_score}")
 
-        if val_score > best_score:
-            best_score = val_score
-            LOGGER.info(f"Epoch {epoch+1} - Save Best Score: {best_score:.4f} Model")
-            torch.save(
-                {"model": model.state_dict(), "preds": val_preds},
-                CFG.OUTPUT_DIR + f"{CFG.model_name}_epoch{epoch}_best.pth",
-            )
+        if val_acc_score > best_acc_score:
+            best_score = val_acc_score
+            if val_f1_score > best_f1_score:
+                best_f1_score = val_f1_score
+                LOGGER.info(f"Epoch {epoch+1} - Save Best Accuracy: {best_acc_score:.4f} - Save Best F1-score: {best_f1_score:.4f} Model")
+                torch.save(
+                    {"model": model.state_dict(), "preds": val_preds},
+                    CFG.OUTPUT_DIR + f"{CFG.model_name}_epoch{epoch+1}_best.pth",
+                )
     tb.close()
 
 if __name__ == "__main__":
