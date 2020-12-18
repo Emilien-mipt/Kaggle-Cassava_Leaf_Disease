@@ -142,25 +142,21 @@ def main():
         LOGGER.info(f"Epoch {epoch+1} - Accuracy: {val_acc_score} - F1-score {val_f1_score}")
 
         # Update best score
-        if val_acc_score > best_acc_score:
+        if (val_acc_score > best_acc_score) and (val_f1_score > best_f1_score):
             best_acc_score = val_acc_score
-        if val_f1_score > best_f1_score:
             best_f1_score = val_f1_score
-
-        if val_acc_score > best_acc_score:
-            if val_f1_score > best_f1_score:
-                LOGGER.info(
-                    f"Epoch {epoch+1} - Save Best Accuracy: {best_acc_score:.4f} - \
-                    Save Best F1-score: {best_f1_score:.4f} Model"
-                )
-                torch.save(
-                    {"model": model.state_dict(), "preds": val_preds},
-                    os.path.join(
-                        logger_path,
-                        "weights",
-                        f"{CFG.model_name}_epoch{epoch+1}_best.pth",
-                    ),
-                )
+            LOGGER.info(
+                f"Epoch {epoch+1} - Save Best Accuracy: {best_acc_score:.4f} - \
+                Save Best F1-score: {best_f1_score:.4f} Model"
+            )
+            torch.save(
+                {"model": model.state_dict(), "preds": val_preds},
+                os.path.join(
+                    logger_path,
+                    "weights",
+                    f"{CFG.model_name}_epoch{epoch+1}_best.pth",
+                ),
+            )
 
     LOGGER.info(
         f"AFTER TRAINING: Best Accuracy: {best_acc_score:.4f} - \
