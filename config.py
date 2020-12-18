@@ -18,8 +18,8 @@ class CFG:
     # Train configs
     debug = False
     apex = False
-    epochs = 100
-    model_name = "resnext50_32x4d"
+    epochs = 50
+    model_name = "resnet18"
     batch_size = 32
     size = 256
     num_workers = 8
