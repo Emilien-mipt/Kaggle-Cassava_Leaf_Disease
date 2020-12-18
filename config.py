@@ -18,12 +18,12 @@ class CFG:
     # Train configs
     debug = False
     apex = False
-    print_freq = 100
-    num_workers = 4
-    model_name = "resnext50_32x4d"
-    batch_size = 2
-    size = 256
     epochs = 100
+    model_name = "resnext50_32x4d"
+    batch_size = 32
+    size = 256
+    num_workers = 8
+    print_freq = 100
     # Optimizer config
     lr = 1e-3
     min_lr = 1e-6
