@@ -141,10 +141,19 @@ def main():
         )
         LOGGER.info(f"Epoch {epoch+1} - Accuracy: {val_acc_score} - F1-score {val_f1_score}")
 
+        best_acc_bool = False
+        best_f1_bool = False
+
         # Update best score
-        if (val_acc_score > best_acc_score) and (val_f1_score > best_f1_score):
+        if val_acc_score > best_acc_score:
             best_acc_score = val_acc_score
-            best_f1_score = val_f1_score
+            best_acc_bool = True
+
+        if val_f1_score > best_f1_score:
+            best_acc_score = val_acc_score
+            best_f1_bool = True
+
+        if best_acc_bool and best_f1_bool:
             LOGGER.info(
                 f"Epoch {epoch+1} - Save Best Accuracy: {best_acc_score:.4f} - \
                 Save Best F1-score: {best_f1_score:.4f} Model"
