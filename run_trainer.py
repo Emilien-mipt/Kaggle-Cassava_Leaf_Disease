@@ -20,9 +20,7 @@ from utils.utils import get_score, init_logger, seed_torch
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Parse the argument to define the train log dir name"
-    )
+    parser = argparse.ArgumentParser(description="Parse the argument to define the train log dir name")
     parser.add_argument(
         "--logdir_name",
         type=str,
@@ -35,9 +33,9 @@ def main():
     logger_path = os.path.join(CFG.OUTPUT_DIR, log_dir_name)
 
     # Create dir for saving logs and weights
-    print("Creating dir {} for saving logs".format(log_dir_name))
+    print(f"Creating dir {log_dir_name} for saving logs")
     os.makedirs(os.path.join(logger_path, "weights"))
-    print("Dir {} has been created!".format(log_dir_name))
+    print(f"Dir {log_dir_name} has been created!")
 
     # Define logger to save train logs
     LOGGER = init_logger(os.path.join(logger_path, "train.log"))
@@ -119,9 +117,7 @@ def main():
         start_time = time.time()
 
         # train
-        avg_train_loss, train_acc = train_fn(
-            train_loader, model, criterion, optimizer, epoch, device
-        )
+        avg_train_loss, train_acc = train_fn(train_loader, model, criterion, optimizer, epoch, device)
 
         # eval
         avg_val_loss, val_preds = valid_fn(valid_loader, model, criterion, device)
@@ -140,18 +136,22 @@ def main():
         elapsed = time.time() - start_time
 
         LOGGER.info(
-            f"Epoch {epoch+1} - avg_train_loss: {avg_train_loss:.4f}  avg_val_loss: {avg_val_loss:.4f}  time: {elapsed:.0f}s"
+            f"Epoch {epoch+1} - avg_train_loss: {avg_train_loss:.4f} \
+            avg_val_loss: {avg_val_loss:.4f}  time: {elapsed:.0f}s"
         )
-        LOGGER.info(
-            f"Epoch {epoch+1} - Accuracy: {val_acc_score} - F1-score {val_f1_score}"
-        )
+        LOGGER.info(f"Epoch {epoch+1} - Accuracy: {val_acc_score} - F1-score {val_f1_score}")
 
+        # Update best score
         if val_acc_score > best_acc_score:
             best_acc_score = val_acc_score
+        if val_f1_score > best_f1_score:
+            best_f1_score = val_f1_score
+
+        if val_acc_score > best_acc_score:
             if val_f1_score > best_f1_score:
-                best_f1_score = val_f1_score
                 LOGGER.info(
-                    f"Epoch {epoch+1} - Save Best Accuracy: {best_acc_score:.4f} - Save Best F1-score: {best_f1_score:.4f} Model"
+                    f"Epoch {epoch+1} - Save Best Accuracy: {best_acc_score:.4f} - \
+                    Save Best F1-score: {best_f1_score:.4f} Model"
                 )
                 torch.save(
                     {"model": model.state_dict(), "preds": val_preds},
