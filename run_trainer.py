@@ -150,7 +150,7 @@ def main():
             best_acc_bool = True
 
         if val_f1_score > best_f1_score:
-            best_acc_score = val_acc_score
+            best_f1_score = val_f1_score
             best_f1_bool = True
 
         if best_acc_bool and best_f1_bool:
