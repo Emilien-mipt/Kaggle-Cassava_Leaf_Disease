@@ -161,6 +161,11 @@ def main():
                         f"{CFG.model_name}_epoch{epoch+1}_best.pth",
                     ),
                 )
+
+    LOGGER.info(
+        f"AFTER TRAINING: Best Accuracy: {best_acc_score:.4f} - \
+                Best F1-score: {best_f1_score:.4f}"
+    )
     tb.close()
 
 
