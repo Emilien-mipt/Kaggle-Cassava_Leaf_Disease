@@ -74,10 +74,7 @@ def main():
     # Form dataloaders
     # ====================================================
 
-    os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-    os.environ["CUDA_VISIBLE_DEVICES"] = CFG.GPU_ID
-
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device(f"cuda:{CFG.GPU_ID}")
 
     train_dataset = TrainDataset(train_fold, transform=get_transforms(data="train"))
     valid_dataset = TrainDataset(valid_fold, transform=get_transforms(data="valid"))
