@@ -20,7 +20,7 @@ class CFG:
     debug = False
     apex = False
     epochs = 50
-    model_name = "resnet18"
+    model_name = "resnet34"
     batch_size = 32
     size = 256
     num_workers = 8
