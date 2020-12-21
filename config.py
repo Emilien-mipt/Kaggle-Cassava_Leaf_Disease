@@ -20,7 +20,7 @@ class CFG:
     debug = False
     apex = False
     epochs = 50
-    model_name = "tv_resnet101"
+    model_name = "resnext101_32x8d"
     batch_size = 32
     size = 256
     num_workers = 8
