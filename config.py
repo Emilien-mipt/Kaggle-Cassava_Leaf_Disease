@@ -8,7 +8,7 @@ class CFG:
     OUTPUT_DIR = "./logs"
 
     # Main config
-    GPU_ID = "1"
+    GPU_ID = 1
     seed = 42
     target_size = 5
     target_col = "label"
@@ -20,7 +20,7 @@ class CFG:
     debug = False
     apex = False
     epochs = 50
-    model_name = "resnext101_32x8d"
+    model_name = "tf_efficientnet_b3_ns"
     batch_size = 32
     size = 256
     num_workers = 8

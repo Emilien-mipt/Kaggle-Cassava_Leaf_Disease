@@ -102,6 +102,9 @@ def main():
     model = CustomModel(CFG.model_name, pretrained=True)
     model.to(device)
 
+    LOGGER.info(f"Model name {CFG.model_name}")
+    LOGGER.info(f"Batch size {CFG.batch_size}")
+
     optimizer = Adam(model.parameters(), lr=CFG.lr)
 
     # ====================================================
