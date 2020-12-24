@@ -20,7 +20,7 @@ class CFG:
     debug = False
     apex = False
     epochs = 50
-    model_name = "tf_efficientnet_b4_ns"
+    model_name = "efficientnet_b3a"
     batch_size = 32
     size = 256
     num_workers = 8
