@@ -115,12 +115,18 @@ def main():
     best_acc_score = 0.0
     best_f1_score = 0.0
 
+    if CFG.MIXED_PREC:
+        LOGGER.info("Enabling mixed precision for training...")
+
+    # Creates a GradScaler once at the beginning of training.
+    scaler = torch.cuda.amp.GradScaler()
+
     for epoch in range(CFG.epochs):
 
         start_time = time.time()
 
         # train
-        avg_train_loss, train_acc = train_fn(train_loader, model, criterion, optimizer, epoch, device)
+        avg_train_loss, train_acc = train_fn(train_loader, model, criterion, optimizer, scaler, epoch, device)
 
         # eval
         avg_val_loss, val_preds = valid_fn(valid_loader, model, criterion, device)

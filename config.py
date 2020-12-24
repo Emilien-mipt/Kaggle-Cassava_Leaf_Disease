@@ -17,9 +17,9 @@ class CFG:
     inference = False
 
     # Train configs
+    MIXED_PREC = False  # Flag for mixed precision training
     debug = False
-    apex = False
-    epochs = 50
+    epochs = 5
     model_name = "efficientnet_b3a"
     batch_size = 32
     size = 256
