@@ -17,14 +17,16 @@ class CFG:
     inference = False
 
     # Train configs
-    MIXED_PREC = True  # Flag for mixed precision training
+    MIXED_PREC = False  # Flag for mixed precision training
     debug = False
     epochs = 50
-    model_name = "vit_base_patch16_224"
-    batch_size = 16
-    size = 224
+    early_stopping = 5
+    model_name = "efficientnet_b3a"
+    batch_size = 32
+    size = 256
     num_workers = 8
     print_freq = 100
+
     # Optimizer config
     lr = 1e-3
     min_lr = 1e-6

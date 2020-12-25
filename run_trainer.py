@@ -100,7 +100,7 @@ def main():
     # ====================================================
     # model & optimizer
     # ====================================================
-    model = timm.create_model("vit_base_patch16_224", pretrained=True, num_classes=CFG.target_size)
+    model = CustomModel(CFG.model_name, pretrained=True)
     model.to(device)
 
     LOGGER.info(f"Model name {CFG.model_name}")
@@ -113,8 +113,11 @@ def main():
     # ====================================================
     criterion = nn.CrossEntropyLoss()
 
+    best_epoch = 0
     best_acc_score = 0.0
     best_f1_score = 0.0
+
+    count_bad_epochs = 0  # Count epochs that don't improve the score
 
     if CFG.MIXED_PREC:
         LOGGER.info("Enabling mixed precision for training...")
@@ -176,9 +179,16 @@ def main():
                     f"{CFG.model_name}_epoch{epoch+1}_best.pth",
                 ),
             )
+            best_epoch = epoch
+        else:
+            count_bad_epochs += 1
+        # Early stopping
+        if count_bad_epochs > CFG.early_stopping:
+            LOGGER.info(f"Stop the training, since the score has not improved for {CFG.early_stopping} epochs!")
+            break
 
     LOGGER.info(
-        f"AFTER TRAINING: Best Accuracy: {best_acc_score:.4f} - \
+        f"AFTER TRAINING: Epoch{best_epoch}: Best Accuracy: {best_acc_score:.4f} - \
                 Best F1-score: {best_f1_score:.4f}"
     )
     tb.close()
