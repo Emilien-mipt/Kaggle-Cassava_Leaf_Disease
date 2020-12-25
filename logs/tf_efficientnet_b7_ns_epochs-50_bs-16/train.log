@@ -1,0 +1,129 @@
+Reading data...
+Splitting data for training and validation...
+train shape:
+(17117, 2)
+valid shape:
+(4280, 2)
+train fold:
+label
+0      870
+1     1751
+2     1909
+3    10526
+4     2061
+dtype: int64
+validation fold:
+label
+0     217
+1     438
+2     477
+3    2632
+4     516
+dtype: int64
+Model name tf_efficientnet_b7_ns
+Batch size 16
+Enabling mixed precision for training...
+Epoch 1 - avg_train_loss: 0.7465             avg_val_loss: 0.6055  time: 327s
+Epoch 1 - Accuracy: 0.7918224299065421 - F1-score 0.7863457536447057
+Epoch 1 - Save Best Accuracy: 0.7918 -                 Save Best F1-score: 0.7863 Model
+Epoch 2 - avg_train_loss: 0.5389             avg_val_loss: 0.4922  time: 336s
+Epoch 2 - Accuracy: 0.8273364485981308 - F1-score 0.8256676650661159
+Epoch 2 - Save Best Accuracy: 0.8273 -                 Save Best F1-score: 0.8257 Model
+Epoch 3 - avg_train_loss: 0.4610             avg_val_loss: 0.5460  time: 337s
+Epoch 3 - Accuracy: 0.8130841121495327 - F1-score 0.8083748536186663
+Epoch 4 - avg_train_loss: 0.4040             avg_val_loss: 0.4778  time: 337s
+Epoch 4 - Accuracy: 0.8448598130841122 - F1-score 0.8414369050620417
+Epoch 4 - Save Best Accuracy: 0.8449 -                 Save Best F1-score: 0.8414 Model
+Epoch 5 - avg_train_loss: 0.3452             avg_val_loss: 0.4604  time: 338s
+Epoch 5 - Accuracy: 0.8418224299065421 - F1-score 0.8409240951050014
+Epoch 6 - avg_train_loss: 0.2784             avg_val_loss: 0.4928  time: 338s
+Epoch 6 - Accuracy: 0.8397196261682243 - F1-score 0.8401237015474325
+Epoch 7 - avg_train_loss: 0.2339             avg_val_loss: 0.5736  time: 338s
+Epoch 7 - Accuracy: 0.8212616822429907 - F1-score 0.8225993744966725
+Epoch 8 - avg_train_loss: 0.1861             avg_val_loss: 0.5483  time: 338s
+Epoch 8 - Accuracy: 0.8315420560747664 - F1-score 0.8322953088886323
+Epoch 9 - avg_train_loss: 0.1522             avg_val_loss: 0.6040  time: 338s
+Epoch 9 - Accuracy: 0.8364485981308412 - F1-score 0.8329588903030709
+Epoch 10 - avg_train_loss: 0.1220             avg_val_loss: 0.7134  time: 337s
+Epoch 10 - Accuracy: 0.8266355140186916 - F1-score 0.8252301965436222
+Epoch 11 - avg_train_loss: 0.1157             avg_val_loss: 0.7348  time: 337s
+Epoch 11 - Accuracy: 0.8264018691588785 - F1-score 0.8246561033249994
+Epoch 12 - avg_train_loss: 0.0940             avg_val_loss: 0.7774  time: 337s
+Epoch 12 - Accuracy: 0.8315420560747664 - F1-score 0.8288298943488135
+Epoch 13 - avg_train_loss: 0.0963             avg_val_loss: 0.7254  time: 337s
+Epoch 13 - Accuracy: 0.8324766355140187 - F1-score 0.8299064114212585
+Epoch 14 - avg_train_loss: 0.0821             avg_val_loss: 0.7752  time: 337s
+Epoch 14 - Accuracy: 0.8352803738317757 - F1-score 0.8341493470278779
+Epoch 15 - avg_train_loss: 0.0829             avg_val_loss: 0.7632  time: 337s
+Epoch 15 - Accuracy: 0.8205607476635514 - F1-score 0.8232830688065078
+Epoch 16 - avg_train_loss: 0.0751             avg_val_loss: 0.6976  time: 337s
+Epoch 16 - Accuracy: 0.8303738317757009 - F1-score 0.8326616143911317
+Epoch 17 - avg_train_loss: 0.0656             avg_val_loss: 0.8027  time: 337s
+Epoch 17 - Accuracy: 0.8320093457943926 - F1-score 0.8325751452006264
+Epoch 18 - avg_train_loss: 0.0691             avg_val_loss: 0.7877  time: 337s
+Epoch 18 - Accuracy: 0.8165887850467289 - F1-score 0.8201358422889016
+Epoch 19 - avg_train_loss: 0.0623             avg_val_loss: 0.8560  time: 336s
+Epoch 19 - Accuracy: 0.8268691588785047 - F1-score 0.8219980032927958
+Epoch 20 - avg_train_loss: 0.0643             avg_val_loss: 0.8373  time: 337s
+Epoch 20 - Accuracy: 0.8271028037383178 - F1-score 0.8259273235439695
+Epoch 21 - avg_train_loss: 0.0560             avg_val_loss: 0.9143  time: 336s
+Epoch 21 - Accuracy: 0.8184579439252336 - F1-score 0.8203339889255564
+Epoch 22 - avg_train_loss: 0.0556             avg_val_loss: 0.8931  time: 336s
+Epoch 22 - Accuracy: 0.8119158878504673 - F1-score 0.817233991516192
+Epoch 23 - avg_train_loss: 0.0562             avg_val_loss: 0.8975  time: 335s
+Epoch 23 - Accuracy: 0.822196261682243 - F1-score 0.8240955741253022
+Epoch 24 - avg_train_loss: 0.0529             avg_val_loss: 0.8418  time: 335s
+Epoch 24 - Accuracy: 0.8105140186915888 - F1-score 0.8099664082212344
+Epoch 25 - avg_train_loss: 0.0556             avg_val_loss: 0.7230  time: 335s
+Epoch 25 - Accuracy: 0.836214953271028 - F1-score 0.8368118706766206
+Epoch 26 - avg_train_loss: 0.0394             avg_val_loss: 0.9022  time: 334s
+Epoch 26 - Accuracy: 0.835981308411215 - F1-score 0.8331268353571086
+Epoch 27 - avg_train_loss: 0.0461             avg_val_loss: 0.8384  time: 334s
+Epoch 27 - Accuracy: 0.8350467289719626 - F1-score 0.8310219381243099
+Epoch 28 - avg_train_loss: 0.0468             avg_val_loss: 0.9447  time: 334s
+Epoch 28 - Accuracy: 0.8168224299065421 - F1-score 0.8188991624676198
+Epoch 29 - avg_train_loss: 0.0429             avg_val_loss: 0.9547  time: 334s
+Epoch 29 - Accuracy: 0.8165887850467289 - F1-score 0.8136526890736637
+Epoch 30 - avg_train_loss: 0.0418             avg_val_loss: 0.9113  time: 335s
+Epoch 30 - Accuracy: 0.8345794392523365 - F1-score 0.8311062637003267
+Epoch 31 - avg_train_loss: 0.0431             avg_val_loss: 0.8273  time: 335s
+Epoch 31 - Accuracy: 0.8268691588785047 - F1-score 0.8250323491171286
+Epoch 32 - avg_train_loss: 0.0410             avg_val_loss: 0.9788  time: 335s
+Epoch 32 - Accuracy: 0.8189252336448598 - F1-score 0.8160298143957668
+Epoch 33 - avg_train_loss: 0.0407             avg_val_loss: 0.9424  time: 335s
+Epoch 33 - Accuracy: 0.8175233644859813 - F1-score 0.8188171088295041
+Epoch 34 - avg_train_loss: 0.0342             avg_val_loss: 1.0366  time: 335s
+Epoch 34 - Accuracy: 0.8207943925233645 - F1-score 0.814621214680004
+Epoch 35 - avg_train_loss: 0.0348             avg_val_loss: 0.9250  time: 335s
+Epoch 35 - Accuracy: 0.8273364485981308 - F1-score 0.8253109252150869
+Epoch 36 - avg_train_loss: 0.0368             avg_val_loss: 0.9358  time: 335s
+Epoch 36 - Accuracy: 0.8210280373831775 - F1-score 0.8157254188900226
+Epoch 37 - avg_train_loss: 0.0390             avg_val_loss: 0.8834  time: 335s
+Epoch 37 - Accuracy: 0.8268691588785047 - F1-score 0.8276850130213341
+Epoch 38 - avg_train_loss: 0.0361             avg_val_loss: 0.9637  time: 336s
+Epoch 38 - Accuracy: 0.8242990654205608 - F1-score 0.815998581674987
+Epoch 39 - avg_train_loss: 0.0354             avg_val_loss: 0.8536  time: 335s
+Epoch 39 - Accuracy: 0.8287383177570093 - F1-score 0.8286155535337361
+Epoch 40 - avg_train_loss: 0.0315             avg_val_loss: 0.9040  time: 335s
+Epoch 40 - Accuracy: 0.8341121495327103 - F1-score 0.8332398858523871
+Epoch 41 - avg_train_loss: 0.0333             avg_val_loss: 0.8929  time: 337s
+Epoch 41 - Accuracy: 0.8310747663551402 - F1-score 0.8277602530633481
+Epoch 42 - avg_train_loss: 0.0332             avg_val_loss: 0.9067  time: 337s
+Epoch 42 - Accuracy: 0.8247663551401869 - F1-score 0.8218185260180597
+Epoch 43 - avg_train_loss: 0.0335             avg_val_loss: 0.8893  time: 337s
+Epoch 43 - Accuracy: 0.8317757009345794 - F1-score 0.833424849417147
+Epoch 44 - avg_train_loss: 0.0285             avg_val_loss: 0.9467  time: 336s
+Epoch 44 - Accuracy: 0.8345794392523365 - F1-score 0.829228956123902
+Epoch 45 - avg_train_loss: 0.0291             avg_val_loss: 0.9759  time: 337s
+Epoch 45 - Accuracy: 0.8287383177570093 - F1-score 0.8236188065665833
+Epoch 46 - avg_train_loss: 0.0320             avg_val_loss: 0.9564  time: 337s
+Epoch 46 - Accuracy: 0.8207943925233645 - F1-score 0.823868254465059
+Epoch 47 - avg_train_loss: 0.0264             avg_val_loss: 0.9939  time: 337s
+Epoch 47 - Accuracy: 0.8324766355140187 - F1-score 0.8284523498538452
+Epoch 48 - avg_train_loss: 0.0308             avg_val_loss: 0.9126  time: 337s
+Epoch 48 - Accuracy: 0.8186915887850468 - F1-score 0.8178411378078994
+Epoch 49 - avg_train_loss: 0.0236             avg_val_loss: 0.9529  time: 336s
+Epoch 49 - Accuracy: 0.8280373831775701 - F1-score 0.8278705561236038
+Epoch 50 - avg_train_loss: 0.0282             avg_val_loss: 0.9007  time: 336s
+Epoch 50 - Accuracy: 0.8310747663551402 - F1-score 0.8298762134534744
+AFTER TRAINING: Best Accuracy: 0.8449 -                 Best F1-score: 0.8414
