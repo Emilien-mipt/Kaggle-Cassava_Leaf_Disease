@@ -20,9 +20,9 @@ class CFG:
     MIXED_PREC = True  # Flag for mixed precision training
     debug = False
     epochs = 50
-    model_name = "tf_efficientnet_b7_ns"
+    model_name = "vit_base_patch16_224"
     batch_size = 16
-    size = 256
+    size = 224
     num_workers = 8
     print_freq = 100
     # Optimizer config

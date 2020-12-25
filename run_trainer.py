@@ -4,6 +4,7 @@ import time
 
 import numpy as np
 import pandas as pd
+import timm
 import torch
 import torch.nn as nn
 from sklearn.model_selection import train_test_split
@@ -99,7 +100,7 @@ def main():
     # ====================================================
     # model & optimizer
     # ====================================================
-    model = CustomModel(CFG.model_name, pretrained=True)
+    model = timm.create_model("vit_base_patch16_224", pretrained=True, num_classes=CFG.target_size)
     model.to(device)
 
     LOGGER.info(f"Model name {CFG.model_name}")
