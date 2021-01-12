@@ -17,13 +17,13 @@ class CFG:
     inference = False
 
     # Train configs
-    MIXED_PREC = False  # Flag for mixed precision training
+    MIXED_PREC = True  # Flag for mixed precision training
     debug = False
     epochs = 50
-    early_stopping = 5
-    model_name = "efficientnet_b3a"
-    batch_size = 32
-    size = 256
+    early_stopping = 10
+    model_name = "vit_large_patch16_224"
+    batch_size = 8
+    size = 224
     num_workers = 8
     print_freq = 100
 

@@ -100,7 +100,7 @@ def main():
     # ====================================================
     # model & optimizer
     # ====================================================
-    model = CustomModel(CFG.model_name, pretrained=True)
+    model = timm.create_model(CFG.model_name, pretrained=True, num_classes=CFG.target_size)
     model.to(device)
 
     LOGGER.info(f"Model name {CFG.model_name}")
