@@ -179,16 +179,19 @@ def main():
                     f"{CFG.model_name}_epoch{epoch+1}_best.pth",
                 ),
             )
-            best_epoch = epoch
+            best_epoch = epoch + 1
+            count_bad_epochs = 0
         else:
             count_bad_epochs += 1
+        print(count_bad_epochs)
+        LOGGER.info(f"Number of bad epochs {count_bad_epochs}")
         # Early stopping
         if count_bad_epochs > CFG.early_stopping:
             LOGGER.info(f"Stop the training, since the score has not improved for {CFG.early_stopping} epochs!")
             break
 
     LOGGER.info(
-        f"AFTER TRAINING: Epoch{best_epoch}: Best Accuracy: {best_acc_score:.4f} - \
+        f"AFTER TRAINING: Epoch {best_epoch}: Best Accuracy: {best_acc_score:.4f} - \
                 Best F1-score: {best_f1_score:.4f}"
     )
     tb.close()
