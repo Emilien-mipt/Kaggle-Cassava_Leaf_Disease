@@ -4,6 +4,7 @@ import time
 
 import numpy as np
 import pandas as pd
+import timm
 import torch
 import torch.nn as nn
 from sklearn.model_selection import train_test_split
@@ -20,9 +21,7 @@ from utils.utils import get_score, init_logger, seed_torch
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Parse the argument to define the train log dir name"
-    )
+    parser = argparse.ArgumentParser(description="Parse the argument to define the train log dir name")
     parser.add_argument(
         "--logdir_name",
         type=str,
@@ -35,9 +34,9 @@ def main():
     logger_path = os.path.join(CFG.OUTPUT_DIR, log_dir_name)
 
     # Create dir for saving logs and weights
-    print("Creating dir {} for saving logs".format(log_dir_name))
+    print(f"Creating dir {log_dir_name} for saving logs")
     os.makedirs(os.path.join(logger_path, "weights"))
-    print("Dir {} has been created!".format(log_dir_name))
+    print(f"Dir {log_dir_name} has been created!")
 
     # Define logger to save train logs
     LOGGER = init_logger(os.path.join(logger_path, "train.log"))
@@ -76,7 +75,7 @@ def main():
     # Form dataloaders
     # ====================================================
 
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device(f"cuda:{CFG.GPU_ID}")
 
     train_dataset = TrainDataset(train_fold, transform=get_transforms(data="train"))
     valid_dataset = TrainDataset(valid_fold, transform=get_transforms(data="valid"))
@@ -101,8 +100,11 @@ def main():
     # ====================================================
     # model & optimizer
     # ====================================================
-    model = CustomModel(CFG.model_name, pretrained=True)
+    model = timm.create_model(CFG.model_name, pretrained=True, num_classes=CFG.target_size)
     model.to(device)
+
+    LOGGER.info(f"Model name {CFG.model_name}")
+    LOGGER.info(f"Batch size {CFG.batch_size}")
 
     optimizer = Adam(model.parameters(), lr=CFG.lr)
 
@@ -111,17 +113,24 @@ def main():
     # ====================================================
     criterion = nn.CrossEntropyLoss()
 
+    best_epoch = 0
     best_acc_score = 0.0
     best_f1_score = 0.0
+
+    count_bad_epochs = 0  # Count epochs that don't improve the score
+
+    if CFG.MIXED_PREC:
+        LOGGER.info("Enabling mixed precision for training...")
+
+    # Creates a GradScaler once at the beginning of training.
+    scaler = torch.cuda.amp.GradScaler()
 
     for epoch in range(CFG.epochs):
 
         start_time = time.time()
 
         # train
-        avg_train_loss, train_acc = train_fn(
-            train_loader, model, criterion, optimizer, epoch, device
-        )
+        avg_train_loss, train_acc = train_fn(train_loader, model, criterion, optimizer, scaler, epoch, device)
 
         # eval
         avg_val_loss, val_preds = valid_fn(valid_loader, model, criterion, device)
@@ -140,27 +149,51 @@ def main():
         elapsed = time.time() - start_time
 
         LOGGER.info(
-            f"Epoch {epoch+1} - avg_train_loss: {avg_train_loss:.4f}  avg_val_loss: {avg_val_loss:.4f}  time: {elapsed:.0f}s"
+            f"Epoch {epoch+1} - avg_train_loss: {avg_train_loss:.4f} \
+            avg_val_loss: {avg_val_loss:.4f}  time: {elapsed:.0f}s"
         )
-        LOGGER.info(
-            f"Epoch {epoch+1} - Accuracy: {val_acc_score} - F1-score {val_f1_score}"
-        )
+        LOGGER.info(f"Epoch {epoch+1} - Accuracy: {val_acc_score} - F1-score {val_f1_score}")
 
+        best_acc_bool = False
+        best_f1_bool = False
+
+        # Update best score
         if val_acc_score > best_acc_score:
             best_acc_score = val_acc_score
-            if val_f1_score > best_f1_score:
-                best_f1_score = val_f1_score
-                LOGGER.info(
-                    f"Epoch {epoch+1} - Save Best Accuracy: {best_acc_score:.4f} - Save Best F1-score: {best_f1_score:.4f} Model"
-                )
-                torch.save(
-                    {"model": model.state_dict(), "preds": val_preds},
-                    os.path.join(
-                        logger_path,
-                        "weights",
-                        f"{CFG.model_name}_epoch{epoch+1}_best.pth",
-                    ),
-                )
+            best_acc_bool = True
+
+        if val_f1_score > best_f1_score:
+            best_f1_score = val_f1_score
+            best_f1_bool = True
+
+        if best_acc_bool and best_f1_bool:
+            LOGGER.info(
+                f"Epoch {epoch+1} - Save Best Accuracy: {best_acc_score:.4f} - \
+                Save Best F1-score: {best_f1_score:.4f} Model"
+            )
+            torch.save(
+                {"model": model.state_dict(), "preds": val_preds},
+                os.path.join(
+                    logger_path,
+                    "weights",
+                    f"{CFG.model_name}_epoch{epoch+1}_best.pth",
+                ),
+            )
+            best_epoch = epoch + 1
+            count_bad_epochs = 0
+        else:
+            count_bad_epochs += 1
+        print(count_bad_epochs)
+        LOGGER.info(f"Number of bad epochs {count_bad_epochs}")
+        # Early stopping
+        if count_bad_epochs > CFG.early_stopping:
+            LOGGER.info(f"Stop the training, since the score has not improved for {CFG.early_stopping} epochs!")
+            break
+
+    LOGGER.info(
+        f"AFTER TRAINING: Epoch {best_epoch}: Best Accuracy: {best_acc_score:.4f} - \
+                Best F1-score: {best_f1_score:.4f}"
+    )
     tb.close()
 
 

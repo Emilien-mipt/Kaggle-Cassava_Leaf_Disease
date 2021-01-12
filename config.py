@@ -8,6 +8,7 @@ class CFG:
     OUTPUT_DIR = "./logs"
 
     # Main config
+    GPU_ID = 1
     seed = 42
     target_size = 5
     target_col = "label"
@@ -16,14 +17,16 @@ class CFG:
     inference = False
 
     # Train configs
+    MIXED_PREC = True  # Flag for mixed precision training
     debug = False
-    apex = False
-    epochs = 100
-    model_name = "resnext50_32x4d"
-    batch_size = 32
-    size = 256
+    epochs = 50
+    early_stopping = 5
+    model_name = "vit_base_patch16_224"
+    batch_size = 16
+    size = 224
     num_workers = 8
     print_freq = 100
+
     # Optimizer config
     lr = 1e-3
     min_lr = 1e-6

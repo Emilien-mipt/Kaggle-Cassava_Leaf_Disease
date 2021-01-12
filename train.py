@@ -8,7 +8,7 @@ from config import CFG
 from utils.utils import AverageMeter, get_score, timeSince
 
 
-def train_fn(train_loader, model, criterion, optimizer, epoch, device):
+def train_fn(train_loader, model, criterion, optimizer, scaler, epoch, device):
     batch_time = AverageMeter()
     data_time = AverageMeter()
     losses = AverageMeter()
@@ -21,18 +21,32 @@ def train_fn(train_loader, model, criterion, optimizer, epoch, device):
     for i, (images, labels) in enumerate(tqdm(train_loader)):
         # measure data loading time
         data_time.update(time.time() - end)
+        # zero the gradients
+        optimizer.zero_grad()
 
         images = images.to(device)
         labels = labels.to(device)
 
         batch_size = labels.size(0)
-        y_preds = model(images)
-        loss = criterion(y_preds, labels)
 
-        # Compute gradients and do step
-        optimizer.zero_grad()
-        loss.backward()
-        optimizer.step()
+        if CFG.MIXED_PREC:
+            # Runs the forward pass with autocasting
+            with torch.cuda.amp.autocast():
+                y_preds = model(images)
+                loss = criterion(y_preds, labels)
+            # Scales loss.  Calls backward() on scaled loss to create scaled gradients
+            # Backward ops run in the same dtype autocast chose for corresponding forward ops.
+            scaler.scale(loss).backward()
+            scaler.step(optimizer)
+            # Updates the scale for next iteration.
+            scaler.update()
+        else:
+            y_preds = model(images)
+            loss = criterion(y_preds, labels)
+
+            # Compute gradients and do step
+            loss.backward()
+            optimizer.step()
 
         # record loss
         losses.update(loss.item(), batch_size)
@@ -45,16 +59,13 @@ def train_fn(train_loader, model, criterion, optimizer, epoch, device):
         end = time.time()
         if i % CFG.print_freq == 0 or i == (len(train_loader) - 1):
             print(
-                "Epoch: [{0}][{1}/{2}] "
+                "Epoch: [{Epoch:d}][{Iter:d}/{Len:d}] "
                 "Data {data_time.val:.3f} ({data_time.avg:.3f}) "
                 "Elapsed {remain:s} "
-                "Loss: {loss.val:.4f}({loss.avg:.4f}) "
-                #'LR: {lr:.6f}  '
-                .format(
-                    epoch + 1,
-                    i,
-                    len(train_loader),
-                    batch_time=batch_time,
+                "Loss: {loss.val:.4f}({loss.avg:.4f}) ".format(
+                    Epoch=epoch + 1,
+                    Iter=i,
+                    Len=len(train_loader),
                     data_time=data_time,
                     loss=losses,
                     remain=timeSince(start, float(i + 1) / len(train_loader)),
@@ -92,13 +103,12 @@ def valid_fn(valid_loader, model, criterion, device):
         end = time.time()
         if step % CFG.print_freq == 0 or step == (len(valid_loader) - 1):
             print(
-                "EVAL: [{0}/{1}] "
+                "EVAL: [{Step:d}/{Len:d}] "
                 "Data {data_time.val:.3f} ({data_time.avg:.3f}) "
                 "Elapsed {remain:s} "
                 "Loss: {loss.val:.4f}({loss.avg:.4f}) ".format(
-                    step,
-                    len(valid_loader),
-                    batch_time=batch_time,
+                    Step=step,
+                    Len=len(valid_loader),
                     data_time=data_time,
                     loss=losses,
                     remain=timeSince(start, float(step + 1) / len(valid_loader)),
