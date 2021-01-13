@@ -100,11 +100,12 @@ def main():
     # ====================================================
     # model & optimizer
     # ====================================================
-    model = timm.create_model(CFG.model_name, pretrained=True, num_classes=CFG.target_size)
+    model = CustomModel(CFG.model_name, pretrained=True)
     model.to(device)
 
     LOGGER.info(f"Model name {CFG.model_name}")
     LOGGER.info(f"Batch size {CFG.batch_size}")
+    LOGGER.info(f"Input size {CFG.size}")
 
     optimizer = Adam(model.parameters(), lr=CFG.lr)
 

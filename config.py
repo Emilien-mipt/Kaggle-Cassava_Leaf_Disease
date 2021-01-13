@@ -20,10 +20,10 @@ class CFG:
     MIXED_PREC = True  # Flag for mixed precision training
     debug = False
     epochs = 50
-    early_stopping = 5
-    model_name = "vit_base_patch16_224"
+    early_stopping = 10
+    model_name = "efficientnet_b3a"
     batch_size = 16
-    size = 224
+    size = 512
     num_workers = 8
     print_freq = 100
 
