@@ -24,6 +24,8 @@ class CFG:
     model_name = "efficientnet_b3a"
     batch_size = 16
     size = 512
+    MEAN = [0.4298, 0.4962, 0.3130]
+    STD = [0.2142, 0.2191, 0.1954]
     num_workers = 8
     print_freq = 100
 
