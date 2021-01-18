@@ -12,9 +12,6 @@ class CFG:
     seed = 42
     target_size = 5
     target_col = "label"
-    trn_fold = [0, 1, 2, 3, 4]
-    train = True
-    inference = False
 
     # Train configs
     MIXED_PREC = True  # Flag for mixed precision training
@@ -24,8 +21,8 @@ class CFG:
     model_name = "efficientnet_b3a"
     batch_size = 16
     size = 512
-    MEAN = [0.4298, 0.4962, 0.3130]
-    STD = [0.2142, 0.2191, 0.1954]
+    MEAN = [0.485, 0.456, 0.406]  # ImageNet values
+    STD = [0.229, 0.224, 0.225]  # ImageNet values
     num_workers = 8
     print_freq = 100
 
