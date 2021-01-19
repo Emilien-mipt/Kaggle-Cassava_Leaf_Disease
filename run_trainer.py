@@ -2,9 +2,7 @@ import argparse
 import os
 import time
 
-import numpy as np
 import pandas as pd
-import timm
 import torch
 import torch.nn as nn
 from sklearn.model_selection import train_test_split
@@ -17,7 +15,7 @@ from config import CFG
 from model import CustomModel
 from train import train_fn, valid_fn
 from train_test_dataset import TrainDataset
-from utils.utils import get_score, init_logger, seed_torch
+from utils.utils import get_score, init_logger, save_batch, seed_torch
 
 
 def main():
@@ -27,8 +25,15 @@ def main():
         type=str,
         help="Name of the dir to save train logs",
     )
+    parser.add_argument(
+        "--save_batch_fig",
+        type=bool,
+        default=True,
+        help="Whether to save a sample of a batch or not",
+    )
     args = parser.parse_args()
     log_dir_name = args.logdir_name
+    save_single_batch = args.save_batch_fig
 
     # Path to log
     logger_path = os.path.join(CFG.OUTPUT_DIR, log_dir_name)
@@ -48,6 +53,8 @@ def main():
 
     LOGGER.info("Reading data...")
     train_df = pd.read_csv("./data/cassava-leaf-disease-classification/train.csv")
+
+    CLASS_NAMES = ["CBB", "CBSD", "CGM", "CMD", "Healthy"]
 
     LOGGER.info("Splitting data for training and validation...")
     X_train, X_val, y_train, y_val = train_test_split(
@@ -96,6 +103,15 @@ def main():
         pin_memory=True,
         drop_last=False,
     )
+
+    # Show batch to see the effect of augmentations
+    if save_single_batch:
+        LOGGER.info("Creating dir to save samples of a batch...")
+        path_to_figs = os.path.join(logger_path, "batch_figs")
+        os.makedirs(path_to_figs)
+        LOGGER.info("Saving figures of a single batch...")
+        save_batch(train_loader, CLASS_NAMES, path_to_figs, CFG)
+        LOGGER.info("Figures have been saved!")
 
     # ====================================================
     # model & optimizer
