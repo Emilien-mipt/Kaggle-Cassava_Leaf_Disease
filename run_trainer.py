@@ -205,7 +205,25 @@ def main():
         # Early stopping
         if count_bad_epochs > CFG.early_stopping:
             LOGGER.info(f"Stop the training, since the score has not improved for {CFG.early_stopping} epochs!")
+            torch.save(
+                {"model": model.state_dict(), "preds": val_preds},
+                os.path.join(
+                    logger_path,
+                    "weights",
+                    f"{CFG.model_name}_epoch{epoch+1}_last.pth",
+                ),
+            )
             break
+        elif epoch + 1 == CFG.epochs:
+            LOGGER.info(f"Reached the final {epoch+1} epoch!")
+            torch.save(
+                {"model": model.state_dict(), "preds": val_preds},
+                os.path.join(
+                    logger_path,
+                    "weights",
+                    f"{CFG.model_name}_epoch{epoch+1}_final.pth",
+                ),
+            )
 
     LOGGER.info(
         f"AFTER TRAINING: Epoch {best_epoch}: Best Accuracy: {best_acc_score:.4f} - \
