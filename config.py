@@ -33,6 +33,10 @@ class CFG:
     gradient_accumulation_steps = 1
     max_grad_norm = 1000
 
+    # Criterion config
+    criterion = "LabelSmoothing"
+    smooth_alpha = 0.1
+
 
 if CFG.debug:
     CFG.epochs = 1

@@ -1,6 +1,13 @@
-from albumentations import (CenterCrop, Compose, HorizontalFlip, Normalize,
-                            RandomResizedCrop, Resize, ShiftScaleRotate,
-                            Transpose, VerticalFlip)
+from albumentations import (
+    CenterCrop,
+    Compose,
+    HorizontalFlip,
+    Normalize,
+    RandomResizedCrop,
+    Resize,
+    Transpose,
+    VerticalFlip,
+)
 from albumentations.pytorch import ToTensorV2
 
 from config import CFG
@@ -19,7 +26,6 @@ def get_transforms(*, data):
                 Transpose(p=0.5),
                 HorizontalFlip(p=0.5),
                 VerticalFlip(p=0.5),
-                ShiftScaleRotate(p=0.5),
                 Normalize(
                     mean=CFG.MEAN,
                     std=CFG.STD,

@@ -4,8 +4,6 @@ Calculation Of standard deviation and mean (per channel) over all images of the 
 import cv2
 import pandas as pd
 import torch
-import torchvision.datasets as datasets
-import torchvision.transforms as transforms
 from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader
 from tqdm import tqdm

@@ -15,6 +15,7 @@ from config import CFG
 from model import CustomModel
 from train import train_fn, valid_fn
 from train_test_dataset import TrainDataset
+from utils.loss_functions import get_criterion
 from utils.utils import get_score, init_logger, save_batch, seed_torch
 
 
@@ -128,7 +129,8 @@ def main():
     # ====================================================
     # loop
     # ====================================================
-    criterion = nn.CrossEntropyLoss()
+    criterion = get_criterion()
+    LOGGER.info(f"Select {CFG.criterion} criterion")
 
     best_epoch = 0
     best_acc_score = 0.0
