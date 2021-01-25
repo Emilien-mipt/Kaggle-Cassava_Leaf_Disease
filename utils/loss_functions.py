@@ -2,6 +2,7 @@ import sys
 
 import torch
 import torch.nn as nn
+from bi_tempered_helper import bi_tempered_logistic_loss
 
 from config import CFG
 
@@ -19,6 +20,8 @@ def get_criterion():
         criterion = nn.CrossEntropyLoss()
     elif CFG.criterion == "LabelSmoothing":
         criterion = LabelSmoothingLoss()
+    elif CFG.criterion == "Bi-TemperedLoss":
+        criterion = BiTemperedLogisticLoss()
     return criterion
 
 
@@ -40,3 +43,22 @@ class LabelSmoothingLoss(nn.Module):
             true_dist.fill_(self.smoothing / (self.cls - 1))
             true_dist.scatter_(1, target.data.unsqueeze(1), self.confidence)
         return torch.mean(torch.sum(-true_dist * pred, dim=self.dim))
+
+
+# ====================================================
+# Bi-Tempered Loss
+# ====================================================
+class BiTemperedLogisticLoss(nn.Module):
+    def __init__(self, t1=CFG.T1, t2=CFG.T2, smoothing=0.0):
+        super().__init__()
+        self.t1 = t1
+        self.t2 = t2
+        self.smoothing = smoothing
+
+    def forward(self, logit_label, truth_label):
+        loss_label = bi_tempered_logistic_loss(
+            logit_label, truth_label, t1=self.t1, t2=self.t2, label_smoothing=self.smoothing, reduction="none"
+        )
+
+        loss_label = loss_label.mean()
+        return loss_label
