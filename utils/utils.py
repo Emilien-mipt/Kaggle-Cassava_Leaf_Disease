@@ -38,7 +38,7 @@ def seed_torch(seed=42):
     torch.backends.cudnn.deterministic = True
 
 
-class AverageMeter(object):
+class AverageMeter:
     """Computes and stores the average and current value"""
 
     def __init__(self):
@@ -68,10 +68,10 @@ def timeSince(since, percent):
     s = now - since
     es = s / (percent)
     rs = es - s
-    return "%s (remain %s)" % (asMinutes(s), asMinutes(rs))
+    return "{} (remain {})".format(asMinutes(s), asMinutes(rs))
 
 
-def save_input(input_tensor, title: str, fig_path: str, index: int, config):
+def save_input(input_tensor, title, fig_path, index, config):
     """Show a single image."""
     mean = np.array(config.MEAN)
     std = np.array(config.STD)
@@ -84,7 +84,7 @@ def save_input(input_tensor, title: str, fig_path: str, index: int, config):
     plt.savefig(os.path.join(fig_path, fig_name))
 
 
-def save_batch(dataloader, class_names: list, fig_path: str, config):
+def save_batch(dataloader, class_names, fig_path, config):
     """Show images for a batch."""
     X_batch, y_batch = next(iter(dataloader))
     for index, (x_item, y_item) in enumerate(zip(X_batch, y_batch)):

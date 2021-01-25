@@ -1,7 +1,12 @@
+import sys
+
 import torch
 import torch.nn as nn
 
-import config as CFG
+from config import CFG
+
+sys.path.insert(0, "..")
+
 
 # ====================================================
 # Criterion - ['LabelSmoothing', 'FocalLoss' 'FocalCosineLoss', 'SymmetricCrossEntropyLoss',

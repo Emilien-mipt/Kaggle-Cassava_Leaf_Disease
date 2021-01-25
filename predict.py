@@ -29,9 +29,7 @@ def predict(test_fold, state, device):
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Parse the arguments to define the dict state for the model"
-    )
+    parser = argparse.ArgumentParser(description="Parse the arguments to define the dict state for the model")
     parser.add_argument(
         "--state",
         type=str,
@@ -39,9 +37,7 @@ def main():
     )
     args = parser.parse_args()
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    test_fold = pd.read_csv(
-        "./data/cassava-leaf-disease-classification/sample_submission.csv"
-    )
+    test_fold = pd.read_csv("./data/cassava-leaf-disease-classification/sample_submission.csv")
     state = args.state
     predict(test_fold, state, device)
 

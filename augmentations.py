@@ -1,5 +1,13 @@
-from albumentations import (CenterCrop, Compose, HorizontalFlip, Normalize,
-                            RandomResizedCrop, Resize, Transpose, VerticalFlip)
+from albumentations import (
+    CenterCrop,
+    Compose,
+    HorizontalFlip,
+    Normalize,
+    RandomResizedCrop,
+    Resize,
+    Transpose,
+    VerticalFlip,
+)
 from albumentations.pytorch import ToTensorV2
 
 from config import CFG
@@ -29,8 +37,8 @@ def get_transforms(*, data):
     elif data == "valid":
         return Compose(
             [
-                Resize(CFG.size, CFG.size),
-                # CenterCrop(CFG.size, CFG.size, p=1.0),
+                # Resize(CFG.size, CFG.size),
+                CenterCrop(CFG.size, CFG.size, p=1.0),
                 Normalize(
                     mean=CFG.MEAN,
                     std=CFG.STD,

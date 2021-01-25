@@ -34,8 +34,9 @@ class CFG:
     max_grad_norm = 1000
 
     # Criterion config
+    # Label smoothing
     criterion = "LabelSmoothing"
-    smooth_alpha = 0.1
+    smooth_alpha = 0.5
 
 
 if CFG.debug:
