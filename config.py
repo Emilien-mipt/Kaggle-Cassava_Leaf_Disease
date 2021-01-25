@@ -34,9 +34,11 @@ class CFG:
     max_grad_norm = 1000
 
     # Criterion config
+
     # Label smoothing
     # criterion = "LabelSmoothing"
-    # smooth_alpha = 0.5
+    smooth_alpha = 0.5
+
     # Bi-Tempered Loss
     criterion = "Bi-TemperedLoss"
     T1 = 0.3

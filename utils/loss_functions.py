@@ -2,9 +2,10 @@ import sys
 
 import torch
 import torch.nn as nn
-from bi_tempered_helper import bi_tempered_logistic_loss
 
 from config import CFG
+
+from .bi_tempered_helper import bi_tempered_logistic_loss
 
 sys.path.insert(0, "..")
 
