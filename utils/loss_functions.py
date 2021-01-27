@@ -2,6 +2,7 @@ import sys
 
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
 from config import CFG
 
@@ -25,6 +26,8 @@ def get_criterion():
         criterion = BiTemperedLogisticLoss()
     elif CFG.criterion == "FocalLoss":
         criterion = FocalLoss()
+    elif CFG.criterion == "FocalCosineLoss":
+        criterion = FocalCosineLoss()
     return criterion
 
 
@@ -87,3 +90,31 @@ class FocalLoss(nn.Module):
             return torch.mean(F_loss)
         else:
             return F_loss
+
+
+# ====================================================
+# Focal Cosine Loss
+# ====================================================
+class FocalCosineLoss(nn.Module):
+    def __init__(self, alpha=1, gamma=CFG.gamma, xent=0.1):
+        super().__init__()
+        self.alpha = alpha
+        self.gamma = gamma
+
+        self.xent = xent
+
+        self.y = torch.Tensor([1]).cuda()
+
+    def forward(self, input, target, reduction="mean"):
+        cosine_loss = F.cosine_embedding_loss(
+            input, F.one_hot(target, num_classes=input.size(-1)), self.y, reduction=reduction
+        )
+
+        cent_loss = F.cross_entropy(F.normalize(input), target, reduce=False)
+        pt = torch.exp(-cent_loss)
+        focal_loss = self.alpha * (1 - pt) ** self.gamma * cent_loss
+
+        if reduction == "mean":
+            focal_loss = torch.mean(focal_loss)
+
+        return cosine_loss + self.xent * focal_loss

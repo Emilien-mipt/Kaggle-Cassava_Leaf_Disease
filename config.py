@@ -48,7 +48,10 @@ class CFG:
 
     # FocalLoss
     criterion = "FocalLoss"
-    gamma = 3
+    gamma = 1
+
+    # FocalCosineLoss
+    criterion = "FocalCosineLoss"
 
 
 if CFG.debug:
