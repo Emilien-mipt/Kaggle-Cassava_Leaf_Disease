@@ -23,6 +23,8 @@ def get_criterion():
         criterion = LabelSmoothingLoss()
     elif CFG.criterion == "Bi-TemperedLoss":
         criterion = BiTemperedLogisticLoss()
+    elif CFG.criterion == "FocalLoss":
+        criterion = FocalLoss()
     return criterion
 
 
@@ -63,3 +65,25 @@ class BiTemperedLogisticLoss(nn.Module):
 
         loss_label = loss_label.mean()
         return loss_label
+
+
+# ====================================================
+# Focal Loss
+# ====================================================
+class FocalLoss(nn.Module):
+    def __init__(self, alpha=1, gamma=CFG.gamma, reduce=True):
+        super().__init__()
+        self.alpha = alpha
+        self.gamma = gamma
+        self.reduce = reduce
+
+    def forward(self, inputs, targets):
+        BCE_loss = nn.CrossEntropyLoss()(inputs, targets)
+
+        pt = torch.exp(-BCE_loss)
+        F_loss = self.alpha * (1 - pt) ** self.gamma * BCE_loss
+
+        if self.reduce:
+            return torch.mean(F_loss)
+        else:
+            return F_loss
