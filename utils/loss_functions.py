@@ -103,7 +103,7 @@ class FocalCosineLoss(nn.Module):
 
         self.xent = xent
 
-        self.y = torch.Tensor([1]).cuda()
+        self.y = torch.Tensor([1]).cuda(f"cuda:{CFG.GPU_ID}")
 
     def forward(self, input, target, reduction="mean"):
         cosine_loss = F.cosine_embedding_loss(
