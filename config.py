@@ -34,6 +34,8 @@ class CFG:
     max_grad_norm = 1000
 
     # Criterion config
+    # Cross-Entropy loss
+    # criterion = "CrossEntropyLoss"
 
     # Label smoothing
     # criterion = "LabelSmoothing"
@@ -46,7 +48,7 @@ class CFG:
 
     # FocalLoss
     criterion = "FocalLoss"
-    gamma = 2
+    gamma = 3
 
 
 if CFG.debug:
