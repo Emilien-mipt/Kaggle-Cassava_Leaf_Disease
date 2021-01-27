@@ -36,13 +36,13 @@ class CFG:
     # Criterion config
 
     # Label smoothing
-    # criterion = "LabelSmoothing"
-    smooth_alpha = 0.5
+    criterion = "LabelSmoothing"
+    smooth_alpha = 0.45
 
     # Bi-Tempered Loss
-    criterion = "Bi-TemperedLoss"
-    T1 = 0.3
-    T2 = 1.2
+    # criterion = "Bi-TemperedLoss"
+    T1 = 0.5
+    T2 = 1.0
 
 
 if CFG.debug:
