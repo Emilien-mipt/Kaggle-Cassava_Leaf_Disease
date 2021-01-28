@@ -51,7 +51,12 @@ class CFG:
     gamma = 2
 
     # FocalCosineLoss
-    criterion = "FocalCosineLoss"
+    # criterion = "FocalCosineLoss"
+
+    # Symmetric Cross-Entropy Loss
+    criterion = "SymmetricCrossEntropyLoss"
+    alpha = 0.1
+    beta = 1.0
 
 
 if CFG.debug:
