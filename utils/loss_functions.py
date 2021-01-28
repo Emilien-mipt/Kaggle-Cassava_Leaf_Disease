@@ -133,7 +133,7 @@ class SymmetricCrossEntropy(nn.Module):
         self.num_classes = num_classes
 
     def forward(self, logits, targets, reduction="mean"):
-        onehot_targets = torch.eye(self.num_classes)[targets].cuda()
+        onehot_targets = torch.eye(self.num_classes)[targets].cuda(f"cuda:{CFG.GPU_ID}")
         ce_loss = F.cross_entropy(logits, targets, reduction=reduction)
         rce_loss = (-onehot_targets * logits.softmax(1).clamp(1e-7, 1.0).log()).sum(1)
         if reduction == "mean":
