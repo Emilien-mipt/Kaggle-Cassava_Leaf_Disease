@@ -33,6 +33,31 @@ class CFG:
     gradient_accumulation_steps = 1
     max_grad_norm = 1000
 
+    # Criterion config
+    # Cross-Entropy loss
+    criterion = "CrossEntropyLoss"
+
+    # Label smoothing
+    # criterion = "LabelSmoothing"
+    smooth_alpha = 0.45
+
+    # Bi-Tempered Loss
+    # criterion = "Bi-TemperedLoss"
+    T1 = 0.5
+    T2 = 1.0
+
+    # FocalLoss
+    # criterion = "FocalLoss"
+    gamma = 2
+
+    # FocalCosineLoss
+    # criterion = "FocalCosineLoss"
+
+    # Symmetric Cross-Entropy Loss
+    # criterion = "SymmetricCrossEntropyLoss"
+    alpha = 0.1
+    beta = 1.0
+
 
 if CFG.debug:
     CFG.epochs = 1

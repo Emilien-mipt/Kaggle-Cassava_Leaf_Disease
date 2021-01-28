@@ -15,7 +15,8 @@ from config import CFG
 from model import CustomModel
 from train import train_fn, valid_fn
 from train_test_dataset import TrainDataset
-from utils.utils import get_score, init_logger, save_batch, seed_torch
+from utils.loss_functions import get_criterion
+from utils.utils import get_score, init_logger, save_batch, seed_torch, weight_class
 
 
 def main():
@@ -55,6 +56,8 @@ def main():
     train_df = pd.read_csv("./data/cassava-leaf-disease-classification/train.csv")
 
     CLASS_NAMES = ["CBB", "CBSD", "CGM", "CMD", "Healthy"]
+    weight_list = weight_class(train_df)
+    LOGGER.info(f"Weight list for classes: {weight_list}")
 
     LOGGER.info("Splitting data for training and validation...")
     X_train, X_val, y_train, y_val = train_test_split(
@@ -128,7 +131,9 @@ def main():
     # ====================================================
     # loop
     # ====================================================
-    criterion = nn.CrossEntropyLoss()
+    weight_tensor = torch.FloatTensor(weight_list).to(device)  # Tensor with weights for classes
+    criterion = nn.CrossEntropyLoss(weight=weight_tensor)
+    LOGGER.info(f"Select {CFG.criterion} criterion")
 
     best_epoch = 0
     best_acc_score = 0.0

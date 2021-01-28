@@ -5,7 +5,7 @@ import torch
 from tqdm import tqdm
 
 from config import CFG
-from utils.utils import AverageMeter, get_score, timeSince
+from utils.utils import AverageMeter, timeSince
 
 
 def train_fn(train_loader, model, criterion, optimizer, scaler, epoch, device):
