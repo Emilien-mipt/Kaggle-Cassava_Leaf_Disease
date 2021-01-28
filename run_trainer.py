@@ -131,8 +131,7 @@ def main():
     # ====================================================
     # loop
     # ====================================================
-    weight_tensor = torch.FloatTensor(weight_list).to(device)  # Tensor with weights for classes
-    criterion = nn.CrossEntropyLoss(weight=weight_tensor)
+    criterion = get_criterion()
     LOGGER.info(f"Select {CFG.criterion} criterion")
 
     best_epoch = 0
