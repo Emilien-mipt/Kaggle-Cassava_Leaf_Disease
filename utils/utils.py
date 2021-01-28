@@ -89,3 +89,16 @@ def save_batch(dataloader, class_names, fig_path, config):
     X_batch, y_batch = next(iter(dataloader))
     for index, (x_item, y_item) in enumerate(zip(X_batch, y_batch)):
         save_input(x_item, class_names[y_item], fig_path, index, config)
+
+
+def weight_class(data_df):
+    class_labels = [i for i in range(5)]
+    count_classes = []
+    for class_n in class_labels:
+        count_class = data_df[data_df["label"] == class_n].shape[0]
+        print(f"Total train images for class {class_n}: {count_class}")
+        count_classes.append(count_class)
+    min_class = min(count_classes)
+    weight_tensor = min_class / np.array(count_classes)
+    print("Weight list: ", weight_tensor)
+    return weight_tensor
