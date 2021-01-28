@@ -47,8 +47,8 @@ class CFG:
     T2 = 1.0
 
     # FocalLoss
-    criterion = "FocalLoss"
-    gamma = 1
+    # criterion = "FocalLoss"
+    gamma = 2
 
     # FocalCosineLoss
     criterion = "FocalCosineLoss"
