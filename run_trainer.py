@@ -6,7 +6,7 @@ import pandas as pd
 import torch
 import torch.nn as nn
 from sklearn.model_selection import train_test_split
-from torch.optim import Adam
+from torch.optim import SGD, Adam
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 
@@ -28,8 +28,7 @@ def main():
     )
     parser.add_argument(
         "--save_batch_fig",
-        type=bool,
-        default=True,
+        action="store_true",
         help="Whether to save a sample of a batch or not",
     )
     args = parser.parse_args()
@@ -126,7 +125,8 @@ def main():
     LOGGER.info(f"Batch size {CFG.batch_size}")
     LOGGER.info(f"Input size {CFG.size}")
 
-    optimizer = Adam(model.parameters(), lr=CFG.lr)
+    # optimizer = Adam(model.parameters(), lr=CFG.lr)
+    optimizer = SGD(model.parameters(), lr=CFG.lr, momentum=CFG.momentum)
 
     # ====================================================
     # loop

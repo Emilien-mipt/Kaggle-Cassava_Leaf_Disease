@@ -17,7 +17,7 @@ class CFG:
     MIXED_PREC = True  # Flag for mixed precision training
     debug = False
     epochs = 50
-    early_stopping = 10
+    early_stopping = 15
     model_name = "efficientnet_b3a"
     batch_size = 16
     size = 512
@@ -28,6 +28,7 @@ class CFG:
 
     # Optimizer config
     lr = 1e-3
+    momentum = 0.9
     min_lr = 1e-6
     weight_decay = 1e-6
     gradient_accumulation_steps = 1

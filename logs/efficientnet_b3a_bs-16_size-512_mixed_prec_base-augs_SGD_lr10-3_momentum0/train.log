@@ -1,0 +1,165 @@
+Reading data...
+Weight list for classes: [1.         0.49657378 0.45557418 0.08261134 0.4218083 ]
+Splitting data for training and validation...
+train shape:
+(17117, 2)
+valid shape:
+(4280, 2)
+train fold:
+label
+0      870
+1     1751
+2     1909
+3    10526
+4     2061
+dtype: int64
+validation fold:
+label
+0     217
+1     438
+2     477
+3    2632
+4     516
+dtype: int64
+Creating dir to save samples of a batch...
+Saving figures of a single batch...
+Figures have been saved!
+Model name efficientnet_b3a
+Batch size 16
+Input size 512
+Select CrossEntropyLoss criterion
+Enabling mixed precision for training...
+Epoch 1 - avg_train_loss: 1.0849             avg_val_loss: 0.9780  time: 287s
+Epoch 1 - Accuracy: 0.641588785046729 - F1-score 0.5312943403721853
+Epoch 1 - Save Best Accuracy: 0.6416 -                 Save Best F1-score: 0.5313 Model
+Number of bad epochs 0
+Epoch 2 - avg_train_loss: 0.9217             avg_val_loss: 0.8625  time: 295s
+Epoch 2 - Accuracy: 0.6906542056074766 - F1-score 0.6144449986340265
+Epoch 2 - Save Best Accuracy: 0.6907 -                 Save Best F1-score: 0.6144 Model
+Number of bad epochs 0
+Epoch 3 - avg_train_loss: 0.8288             avg_val_loss: 0.7891  time: 296s
+Epoch 3 - Accuracy: 0.7292056074766355 - F1-score 0.6831921937515724
+Epoch 3 - Save Best Accuracy: 0.7292 -                 Save Best F1-score: 0.6832 Model
+Number of bad epochs 0
+Epoch 4 - avg_train_loss: 0.7522             avg_val_loss: 2.9936  time: 296s
+Epoch 4 - Accuracy: 0.7478971962616823 - F1-score 0.7165073203974704
+Epoch 4 - Save Best Accuracy: 0.7479 -                 Save Best F1-score: 0.7165 Model
+Number of bad epochs 0
+Epoch 5 - avg_train_loss: 0.6965             avg_val_loss: 0.7136  time: 297s
+Epoch 5 - Accuracy: 0.775 - F1-score 0.7511350485073457
+Epoch 5 - Save Best Accuracy: 0.7750 -                 Save Best F1-score: 0.7511 Model
+Number of bad epochs 0
+Epoch 6 - avg_train_loss: 0.6493             avg_val_loss: 2.8130  time: 297s
+Epoch 6 - Accuracy: 0.7922897196261682 - F1-score 0.7766860623751622
+Epoch 6 - Save Best Accuracy: 0.7923 -                 Save Best F1-score: 0.7767 Model
+Number of bad epochs 0
+Epoch 7 - avg_train_loss: 0.6187             avg_val_loss: 1.1508  time: 297s
+Epoch 7 - Accuracy: 0.8032710280373832 - F1-score 0.7967027462046322
+Epoch 7 - Save Best Accuracy: 0.8033 -                 Save Best F1-score: 0.7967 Model
+Number of bad epochs 0
+Epoch 8 - avg_train_loss: 0.5872             avg_val_loss: 17.5331  time: 297s
+Epoch 8 - Accuracy: 0.8 - F1-score 0.7984101344684046
+Number of bad epochs 1
+Epoch 9 - avg_train_loss: 0.5689             avg_val_loss: 1.3312  time: 297s
+Epoch 9 - Accuracy: 0.8179906542056075 - F1-score 0.8164499991686984
+Epoch 9 - Save Best Accuracy: 0.8180 -                 Save Best F1-score: 0.8164 Model
+Number of bad epochs 0
+Epoch 10 - avg_train_loss: 0.5479             avg_val_loss: 3.4583  time: 297s
+Epoch 10 - Accuracy: 0.8217289719626168 - F1-score 0.8194855416496568
+Epoch 10 - Save Best Accuracy: 0.8217 -                 Save Best F1-score: 0.8195 Model
+Number of bad epochs 0
+Epoch 11 - avg_train_loss: 0.5332             avg_val_loss: 0.5638  time: 297s
+Epoch 11 - Accuracy: 0.8350467289719626 - F1-score 0.8332920818441707
+Epoch 11 - Save Best Accuracy: 0.8350 -                 Save Best F1-score: 0.8333 Model
+Number of bad epochs 0
+Epoch 12 - avg_train_loss: 0.5219             avg_val_loss: 2.8884  time: 297s
+Epoch 12 - Accuracy: 0.8317757009345794 - F1-score 0.8308887587863
+Number of bad epochs 1
+Epoch 13 - avg_train_loss: 0.5105             avg_val_loss: 1.9582  time: 297s
+Epoch 13 - Accuracy: 0.8261682242990654 - F1-score 0.8271606442025119
+Number of bad epochs 2
+Epoch 14 - avg_train_loss: 0.4984             avg_val_loss: 8.3048  time: 297s
+Epoch 14 - Accuracy: 0.8313084112149532 - F1-score 0.82788106133164
+Number of bad epochs 3
+Epoch 15 - avg_train_loss: 0.4921             avg_val_loss: 6.2596  time: 297s
+Epoch 15 - Accuracy: 0.8308411214953271 - F1-score 0.8312120286174914
+Number of bad epochs 4
+Epoch 16 - avg_train_loss: 0.4848             avg_val_loss: 4.9847  time: 297s
+Epoch 16 - Accuracy: 0.8357476635514018 - F1-score 0.8352521096888074
+Epoch 16 - Save Best Accuracy: 0.8357 -                 Save Best F1-score: 0.8353 Model
+Number of bad epochs 0
+Epoch 17 - avg_train_loss: 0.4852             avg_val_loss: 1.1735  time: 297s
+Epoch 17 - Accuracy: 0.8469626168224299 - F1-score 0.8448752234498473
+Epoch 17 - Save Best Accuracy: 0.8470 -                 Save Best F1-score: 0.8449 Model
+Number of bad epochs 0
+Epoch 18 - avg_train_loss: 0.4734             avg_val_loss: 0.4664  time: 297s
+Epoch 18 - Accuracy: 0.8525700934579439 - F1-score 0.8513923052506865
+Epoch 18 - Save Best Accuracy: 0.8526 -                 Save Best F1-score: 0.8514 Model
+Number of bad epochs 0
+Epoch 19 - avg_train_loss: 0.4726             avg_val_loss: 1.3439  time: 297s
+Epoch 19 - Accuracy: 0.8460280373831776 - F1-score 0.8459682596612715
+Number of bad epochs 1
+Epoch 20 - avg_train_loss: 0.4610             avg_val_loss: 1.8580  time: 297s
+Epoch 20 - Accuracy: 0.8460280373831776 - F1-score 0.8458617283694997
+Number of bad epochs 2
+Epoch 21 - avg_train_loss: 0.4599             avg_val_loss: 4.5087  time: 297s
+Epoch 21 - Accuracy: 0.8432242990654205 - F1-score 0.843010320965165
+Number of bad epochs 3
+Epoch 22 - avg_train_loss: 0.4558             avg_val_loss: 10.6033  time: 297s
+Epoch 22 - Accuracy: 0.849766355140187 - F1-score 0.8476871865062187
+Number of bad epochs 4
+Epoch 23 - avg_train_loss: 0.4528             avg_val_loss: 12.2777  time: 297s
+Epoch 23 - Accuracy: 0.8322429906542056 - F1-score 0.8324198484041193
+Number of bad epochs 5
+Epoch 24 - avg_train_loss: 0.4438             avg_val_loss: 0.7770  time: 297s
+Epoch 24 - Accuracy: 0.8570093457943925 - F1-score 0.8565062120779491
+Epoch 24 - Save Best Accuracy: 0.8570 -                 Save Best F1-score: 0.8565 Model
+Number of bad epochs 0
+Epoch 25 - avg_train_loss: 0.4452             avg_val_loss: 6.1655  time: 297s
+Epoch 25 - Accuracy: 0.8467289719626169 - F1-score 0.8464107648366185
+Number of bad epochs 1
+Epoch 26 - avg_train_loss: 0.4404             avg_val_loss: 2.2241  time: 297s
+Epoch 26 - Accuracy: 0.8565420560747663 - F1-score 0.8540844953875858
+Number of bad epochs 2
+Epoch 27 - avg_train_loss: 0.4392             avg_val_loss: 3.4907  time: 297s
+Epoch 27 - Accuracy: 0.8553738317757009 - F1-score 0.8539549204028212
+Number of bad epochs 3
+Epoch 28 - avg_train_loss: 0.4382             avg_val_loss: 0.3934  time: 297s
+Epoch 28 - Accuracy: 0.8670560747663552 - F1-score 0.8649381549922307
+Epoch 28 - Save Best Accuracy: 0.8671 -                 Save Best F1-score: 0.8649 Model
+Number of bad epochs 0
+Epoch 29 - avg_train_loss: 0.4333             avg_val_loss: 2.9808  time: 297s
+Epoch 29 - Accuracy: 0.8525700934579439 - F1-score 0.8499287185408776
+Number of bad epochs 1
+Epoch 30 - avg_train_loss: 0.4316             avg_val_loss: 6.8404  time: 297s
+Epoch 30 - Accuracy: 0.8593457943925233 - F1-score 0.8579208164666972
+Number of bad epochs 2
+Epoch 31 - avg_train_loss: 0.4326             avg_val_loss: 3.0173  time: 297s
+Epoch 31 - Accuracy: 0.8607476635514019 - F1-score 0.8597699854654358
+Number of bad epochs 3
+Epoch 32 - avg_train_loss: 0.4333             avg_val_loss: 2.6151  time: 297s
+Epoch 32 - Accuracy: 0.858411214953271 - F1-score 0.8587661002027573
+Number of bad epochs 4
+Epoch 33 - avg_train_loss: 0.4249             avg_val_loss: 1.0420  time: 297s
+Epoch 33 - Accuracy: 0.8658878504672897 - F1-score 0.865457151495477
+Number of bad epochs 5
+Epoch 34 - avg_train_loss: 0.4225             avg_val_loss: 2.2075  time: 297s
+Epoch 34 - Accuracy: 0.8651869158878505 - F1-score 0.8640283345479486
+Number of bad epochs 6
+Epoch 35 - avg_train_loss: 0.4169             avg_val_loss: 4.0426  time: 297s
+Epoch 35 - Accuracy: 0.8623831775700934 - F1-score 0.8612605709708856
+Number of bad epochs 7
+Epoch 36 - avg_train_loss: 0.4162             avg_val_loss: 11.8691  time: 298s
+Epoch 36 - Accuracy: 0.8572429906542056 - F1-score 0.8572384418166877
+Number of bad epochs 8
+Epoch 37 - avg_train_loss: 0.4141             avg_val_loss: 10.7113  time: 297s
+Epoch 37 - Accuracy: 0.8532710280373832 - F1-score 0.8537759645996063
+Number of bad epochs 9
+Epoch 38 - avg_train_loss: 0.4156             avg_val_loss: 18.8459  time: 297s
+Epoch 38 - Accuracy: 0.8455607476635514 - F1-score 0.8436745359787975
+Number of bad epochs 10
+Epoch 39 - avg_train_loss: 0.4103             avg_val_loss: 4.3366  time: 297s
+Epoch 39 - Accuracy: 0.8628504672897196 - F1-score 0.8607004974548318
+Number of bad epochs 11
+Stop the training, since the score has not improved for 10 epochs!
+AFTER TRAINING: Epoch 28: Best Accuracy: 0.8671 -                 Best F1-score: 0.8655
