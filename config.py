@@ -20,14 +20,14 @@ class CFG:
     early_stopping = 15
     model_name = "efficientnet_b3a"
     batch_size = 16
-    size = 512
+    size = 256
     MEAN = [0.485, 0.456, 0.406]  # ImageNet values
     STD = [0.229, 0.224, 0.225]  # ImageNet values
     num_workers = 8
     print_freq = 100
 
     # Optimizer config
-    lr = 1e-3
+    lr = 1e-7
     momentum = 0.9
     min_lr = 1e-6
     weight_decay = 1e-6

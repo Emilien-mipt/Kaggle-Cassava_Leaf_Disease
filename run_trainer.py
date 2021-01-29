@@ -9,6 +9,7 @@ from sklearn.model_selection import train_test_split
 from torch.optim import SGD, Adam
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
+from torch_lr_finder import LRFinder
 
 from augmentations import get_transforms
 from config import CFG
@@ -31,9 +32,16 @@ def main():
         action="store_true",
         help="Whether to save a sample of a batch or not",
     )
+    parser.add_argument(
+        "--find_lr",
+        action="store_true",
+        help="Whether to find optimal learning rate or not",
+    )
+
     args = parser.parse_args()
     log_dir_name = args.logdir_name
     save_single_batch = args.save_batch_fig
+    find_lr = args.find_lr
 
     # Path to log
     logger_path = os.path.join(CFG.OUTPUT_DIR, log_dir_name)
@@ -133,6 +141,15 @@ def main():
     # ====================================================
     criterion = get_criterion()
     LOGGER.info(f"Select {CFG.criterion} criterion")
+
+    if find_lr:
+        print("Finding oprimal learning rate...")
+        # Add this line before running `LRFinder`
+        lr_finder = LRFinder(model, optimizer, criterion, device="cuda", log_path=logger_path)
+        lr_finder.range_test(train_loader, end_lr=100, num_iter=100)
+        lr_finder.plot()  # to inspect the loss-learning rate graph
+        lr_finder.reset()  # to reset the model and optimizer to their initial state
+        print("Optimal learning rate has been found!")
 
     best_epoch = 0
     best_acc_score = 0.0
