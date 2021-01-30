@@ -10,7 +10,6 @@ from torch.optim import SGD, Adam
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
-from torch_lr_finder import LRFinder
 
 from augmentations import get_transforms
 from config import CFG
@@ -19,6 +18,8 @@ from train import train_fn, valid_fn
 from train_test_dataset import TrainDataset
 from utils.loss_functions import get_criterion
 from utils.utils import get_score, init_logger, save_batch, seed_torch, weight_class
+
+# from torch_lr_finder import LRFinder
 
 
 def main():
@@ -140,8 +141,8 @@ def main():
     # ====================================================
     # loop
     # ====================================================
-    # criterion = get_criterion()
-    criterion = nn.CrossEntropyLoss()
+    criterion = get_criterion()
+    # criterion = nn.CrossEntropyLoss()
     LOGGER.info(f"Select {CFG.criterion} criterion")
 
     if find_lr:
@@ -198,11 +199,11 @@ def main():
         best_f1_bool = False
 
         # Update best score
-        if val_acc_score > best_acc_score:
+        if val_acc_score >= best_acc_score:
             best_acc_score = val_acc_score
             best_acc_bool = True
 
-        if val_f1_score > best_f1_score:
+        if val_f1_score >= best_f1_score:
             best_f1_score = val_f1_score
             best_f1_bool = True
 

@@ -36,11 +36,11 @@ class CFG:
 
     # Criterion config
     # Cross-Entropy loss
-    criterion = "CrossEntropyLoss"
+    # criterion = "CrossEntropyLoss"
 
     # Label smoothing
-    # criterion = "LabelSmoothing"
-    smooth_alpha = 0.45
+    criterion = "LabelSmoothing"
+    smooth_alpha = 0.4
 
     # Bi-Tempered Loss
     # criterion = "Bi-TemperedLoss"
