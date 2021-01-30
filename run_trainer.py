@@ -7,6 +7,7 @@ import torch
 import torch.nn as nn
 from sklearn.model_selection import train_test_split
 from torch.optim import SGD, Adam
+from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 from torch_lr_finder import LRFinder
@@ -133,13 +134,14 @@ def main():
     LOGGER.info(f"Batch size {CFG.batch_size}")
     LOGGER.info(f"Input size {CFG.size}")
 
-    # optimizer = Adam(model.parameters(), lr=CFG.lr)
-    optimizer = SGD(model.parameters(), lr=CFG.lr, momentum=CFG.momentum)
-
+    optimizer = Adam(model.parameters(), lr=CFG.lr)
+    # optimizer = SGD(model.parameters(), lr=CFG.lr, momentum=CFG.momentum)
+    # scheduler = ReduceLROnPlateau(optimizer, 'min', patience=5)
     # ====================================================
     # loop
     # ====================================================
-    criterion = get_criterion()
+    # criterion = get_criterion()
+    criterion = nn.CrossEntropyLoss()
     LOGGER.info(f"Select {CFG.criterion} criterion")
 
     if find_lr:
