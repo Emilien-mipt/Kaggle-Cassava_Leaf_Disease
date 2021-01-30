@@ -35,6 +35,9 @@ def seed_torch(seed=42):
     np.random.seed(seed)
     torch.manual_seed(seed)
     torch.cuda.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    torch.set_printoptions(precision=10)
+    torch.backends.cudnn.benchmark = False
     torch.backends.cudnn.deterministic = True
 
 
