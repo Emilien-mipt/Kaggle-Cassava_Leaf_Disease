@@ -27,7 +27,7 @@ class CFG:
     print_freq = 100
 
     # Optimizer config
-    lr = 1e-3
+    lr = 1e-1
     momentum = 0.9
     min_lr = 1e-6
     weight_decay = 1e-6

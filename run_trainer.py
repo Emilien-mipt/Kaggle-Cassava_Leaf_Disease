@@ -10,6 +10,7 @@ from torch.optim import SGD, Adam
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
+from torch_lr_finder import LRFinder
 
 from augmentations import get_transforms
 from config import CFG
@@ -18,8 +19,6 @@ from train import train_fn, valid_fn
 from train_test_dataset import TrainDataset
 from utils.loss_functions import get_criterion
 from utils.utils import get_score, init_logger, save_batch, seed_torch, weight_class
-
-# from torch_lr_finder import LRFinder
 
 
 def main():
@@ -135,9 +134,9 @@ def main():
     LOGGER.info(f"Batch size {CFG.batch_size}")
     LOGGER.info(f"Input size {CFG.size}")
 
-    optimizer = Adam(model.parameters(), lr=CFG.lr)
-    # optimizer = SGD(model.parameters(), lr=CFG.lr, momentum=CFG.momentum)
-    # scheduler = ReduceLROnPlateau(optimizer, 'min', patience=5)
+    # optimizer = Adam(model.parameters(), lr=CFG.lr)
+    optimizer = SGD(model.parameters(), lr=CFG.lr, momentum=CFG.momentum)
+    scheduler = ReduceLROnPlateau(optimizer, "max", patience=5)
     # ====================================================
     # loop
     # ====================================================
@@ -180,6 +179,8 @@ def main():
         # scoring on validation set
         val_acc_score = get_score(valid_labels, val_preds.argmax(1), metric="accuracy")
         val_f1_score = get_score(valid_labels, val_preds.argmax(1), metric="f1_score")
+
+        scheduler.step(val_acc_score)
 
         tb.add_scalar("Train Loss", avg_train_loss, epoch + 1)
         tb.add_scalar("Train accuracy", train_acc, epoch + 1)
