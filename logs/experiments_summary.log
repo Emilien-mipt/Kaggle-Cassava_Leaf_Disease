@@ -1,0 +1,14 @@
+Baseline:
+Batch_size=16; input_size=512;
+Augs: Train - RandomResizedCrop; Transpose; HV_Flips; Valid - CenterCrop
+
+1) Baseline + CE loss + Adam with lr=10^(-3)
+Scores: Local = 0.8804, Public = 0.879
+2) Baseline + label_smoothing loss (alpha=0.4) + Adam with lr=10^(-3)
+Scores: Local = 0.8869, Public = 0.880
+3) Baseline + label_smoothing loss (alpha=0.4) + SGD with lr=10^(-3) and momentum=0
+Scores: Local = 0.8671, Public = 0.857
+4) Baseline + label_smoothing loss (alpha=0.4) + SGD with lr=10^(-3) and momentum=0.9
+Scores: Local = 0.8843, Public = 0.884
+5) Baseline + label_smoothing loss (alpha=0.4) + SGD with init_lr=10^(-1) and momentum=0.9 + Reduce on Plateau schedule
+Scores: Local = 0.8886, Public = 0.888
