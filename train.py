@@ -8,7 +8,7 @@ from config import CFG
 from utils.utils import AverageMeter, timeSince
 
 
-def train_fn(train_loader, model, criterion, optimizer, scaler, epoch, device):
+def train_fn(train_loader, model, criterion, optimizer, scaler, epoch, device, scheduler=None):
     batch_time = AverageMeter()
     data_time = AverageMeter()
     losses = AverageMeter()
@@ -47,6 +47,8 @@ def train_fn(train_loader, model, criterion, optimizer, scaler, epoch, device):
             # Compute gradients and do step
             loss.backward()
             optimizer.step()
+        if scheduler is not None:
+            scheduler.step()
 
         # record loss
         losses.update(loss.item(), batch_size)

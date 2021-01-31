@@ -7,7 +7,7 @@ import torch
 import torch.nn as nn
 from sklearn.model_selection import train_test_split
 from torch.optim import SGD, Adam
-from torch.optim.lr_scheduler import ReduceLROnPlateau
+from torch.optim.lr_scheduler import OneCycleLR, ReduceLROnPlateau
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 from torch_lr_finder import LRFinder
@@ -136,7 +136,10 @@ def main():
 
     # optimizer = Adam(model.parameters(), lr=CFG.lr)
     optimizer = SGD(model.parameters(), lr=CFG.lr, momentum=CFG.momentum)
-    scheduler = ReduceLROnPlateau(optimizer, "max", patience=5)
+    # scheduler = ReduceLROnPlateau(optimizer, "max", patience=5)
+    scheduler = torch.optim.lr_scheduler.OneCycleLR(
+        optimizer, max_lr=0.1, steps_per_epoch=len(train_loader), epochs=CFG.epochs
+    )
     # ====================================================
     # loop
     # ====================================================
@@ -170,7 +173,9 @@ def main():
         start_time = time.time()
 
         # train
-        avg_train_loss, train_acc = train_fn(train_loader, model, criterion, optimizer, scaler, epoch, device)
+        avg_train_loss, train_acc = train_fn(
+            train_loader, model, criterion, optimizer, scaler, epoch, device, scheduler
+        )
 
         # eval
         avg_val_loss, val_preds = valid_fn(valid_loader, model, criterion, device)
@@ -180,8 +185,11 @@ def main():
         val_acc_score = get_score(valid_labels, val_preds.argmax(1), metric="accuracy")
         val_f1_score = get_score(valid_labels, val_preds.argmax(1), metric="f1_score")
 
-        scheduler.step(val_acc_score)
+        cur_lr = optimizer.param_groups[0]["lr"]
+        # scheduler.step(val_acc_score)
+        # LOGGER.info(f"Current learning rate: {cur_lr}")
 
+        tb.add_scalar("Learning rate", cur_lr, epoch + 1)
         tb.add_scalar("Train Loss", avg_train_loss, epoch + 1)
         tb.add_scalar("Train accuracy", train_acc, epoch + 1)
         tb.add_scalar("Val Loss", avg_val_loss, epoch + 1)

@@ -12,3 +12,5 @@ Scores: Local = 0.8671, Public = 0.857
 Scores: Local = 0.8843, Public = 0.884
 5) Baseline + label_smoothing loss (alpha=0.4) + SGD with init_lr=10^(-1) and momentum=0.9 + Reduce on Plateau schedule
 Scores: Local = 0.8886, Public = 0.888
+6) Baseline + label_smoothing loss (alpha=0.4) + SGD + One Cycle schedule
+Scores: Local = 0.0.8862, Public = 0.888
