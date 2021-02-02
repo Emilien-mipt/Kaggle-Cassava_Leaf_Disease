@@ -138,18 +138,14 @@ def main():
     LOGGER.info(f"Batch size {CFG.batch_size}")
     LOGGER.info(f"Input size {CFG.size}")
 
-    optimizer = Adam(model.parameters(), lr=CFG.lr)
-    # optimizer = SGD(model.parameters(), lr=CFG.lr, momentum=CFG.momentum)
-    # scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, "max", patience=5)
-    # scheduler = torch.optim.lr_scheduler.OneCycleLR(
-    #    optimizer, max_lr=0.1, steps_per_epoch=len(train_loader), epochs=CFG.epochs
-    # )
-    # scheduler = torch.optim.lr_scheduler.CyclicLR(
-    # optimizer, base_lr=0.001, max_lr=0.01, mode="triangular2", step_size_up=2138
-    # )
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(
-        optimizer, T_0=1, T_mult=2, eta_min=0.001, verbose=True
+    # optimizer = Adam(model.parameters(), lr=CFG.lr)
+    optimizer = SGD(model.parameters(), lr=CFG.lr, momentum=CFG.momentum)
+    scheduler = torch.optim.lr_scheduler.CyclicLR(
+        optimizer, base_lr=0.001, max_lr=0.1, mode="triangular2", step_size_up=2138
     )
+    # scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(
+    #    optimizer, T_0=1, T_mult=2, eta_min=0.001, verbose=True
+    # )
     # ====================================================
     # loop
     # ====================================================
