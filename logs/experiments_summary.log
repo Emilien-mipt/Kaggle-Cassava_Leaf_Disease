@@ -2,6 +2,7 @@ Baseline:
 Batch_size=16; input_size=512;
 Augs: Train - RandomResizedCrop; Transpose; HV_Flips; Valid - CenterCrop
 
+### Reproducing the baseline ###
 1) Baseline + CE loss + Adam with lr=10^(-3)
 Scores: Local = 0.8804, Public = 0.879
 2) Baseline + label_smoothing loss (alpha=0.4) + Adam with lr=10^(-3)
@@ -10,7 +11,15 @@ Scores: Local = 0.8869, Public = 0.880
 Scores: Local = 0.8671, Public = 0.857
 4) Baseline + label_smoothing loss (alpha=0.4) + SGD with lr=10^(-3) and momentum=0.9
 Scores: Local = 0.8843, Public = 0.884
+
+### Try schedulers ###
 5) Baseline + label_smoothing loss (alpha=0.4) + SGD with init_lr=10^(-1) and momentum=0.9 + Reduce on Plateau schedule
 Scores: Local = 0.8886, Public = 0.888
-6) Baseline + label_smoothing loss (alpha=0.4) + SGD + One Cycle schedule
-Scores: Local = 0.0.8862, Public = 0.888
+6) Baseline + label_smoothing loss (alpha=0.4) + SGD + One Cycle schedule max_lr=0.1
+Scores: Local = 0.8862, Public = 0.888
+7) Baseline + label_smoothing loss (alpha=0.4) + SGD + CyclicLR schedule with mode=exp with iter=2000, gamma=0.9, base_lr=0.001 and max_lr=0.1
+Scores: Local = 0.8867
+8) Baseline + label_smoothing loss (alpha=0.4) + SGD + CyclicLR schedule with mode=trangular2, base_lr=0.001 and max_lr=0.1
+Scores: Local = 0.8942, Public=0.893
+9) Baseline + label_smoothing loss (alpha=0.4) + SGD + CyclicLR schedule with mode=trangular, base_lr=0.001 and max_lr=0.1
+Scores: Local = 0.8888

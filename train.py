@@ -47,6 +47,7 @@ def train_fn(train_loader, model, criterion, optimizer, scaler, epoch, device, s
             # Compute gradients and do step
             loss.backward()
             optimizer.step()
+        # print("Current LR:", optimizer.param_groups[0]["lr"])
         if scheduler is not None:
             scheduler.step()
 

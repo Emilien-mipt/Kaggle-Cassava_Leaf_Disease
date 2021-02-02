@@ -137,8 +137,11 @@ def main():
     # optimizer = Adam(model.parameters(), lr=CFG.lr)
     optimizer = SGD(model.parameters(), lr=CFG.lr, momentum=CFG.momentum)
     # scheduler = ReduceLROnPlateau(optimizer, "max", patience=5)
-    scheduler = torch.optim.lr_scheduler.OneCycleLR(
-        optimizer, max_lr=0.1, steps_per_epoch=len(train_loader), epochs=CFG.epochs
+    # scheduler = torch.optim.lr_scheduler.OneCycleLR(
+    #    optimizer, max_lr=0.1, steps_per_epoch=len(train_loader), epochs=CFG.epochs
+    # )
+    scheduler = torch.optim.lr_scheduler.CyclicLR(
+        optimizer, base_lr=0.001, max_lr=0.1, mode="triangular", step_size_up=2138
     )
     # ====================================================
     # loop
@@ -226,7 +229,7 @@ def main():
                 os.path.join(
                     logger_path,
                     "weights",
-                    f"{CFG.model_name}_epoch{epoch+1}_best.pth",
+                    "best.pth",
                 ),
             )
             best_epoch = epoch + 1
