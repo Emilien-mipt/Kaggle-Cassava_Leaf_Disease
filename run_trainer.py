@@ -2,22 +2,27 @@ import argparse
 import os
 import time
 
-import numpy as np
 import pandas as pd
-import timm
 import torch
 import torch.nn as nn
 from sklearn.model_selection import train_test_split
-from torch.optim import Adam
+from torch.optim import SGD, Adam
+from torch.optim.lr_scheduler import (
+    CosineAnnealingWarmRestarts,
+    OneCycleLR,
+    ReduceLROnPlateau,
+)
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
+from torch_lr_finder import LRFinder
 
 from augmentations import get_transforms
 from config import CFG
 from model import CustomModel
 from train import train_fn, valid_fn
 from train_test_dataset import TrainDataset
-from utils.utils import get_score, init_logger, seed_torch
+from utils.loss_functions import get_criterion
+from utils.utils import get_score, init_logger, save_batch, seed_torch, weight_class
 
 
 def main():
@@ -27,8 +32,21 @@ def main():
         type=str,
         help="Name of the dir to save train logs",
     )
+    parser.add_argument(
+        "--save_batch_fig",
+        action="store_true",
+        help="Whether to save a sample of a batch or not",
+    )
+    parser.add_argument(
+        "--find_lr",
+        action="store_true",
+        help="Whether to find optimal learning rate or not",
+    )
+
     args = parser.parse_args()
     log_dir_name = args.logdir_name
+    save_single_batch = args.save_batch_fig
+    find_lr = args.find_lr
 
     # Path to log
     logger_path = os.path.join(CFG.OUTPUT_DIR, log_dir_name)
@@ -48,6 +66,10 @@ def main():
 
     LOGGER.info("Reading data...")
     train_df = pd.read_csv("./data/cassava-leaf-disease-classification/train.csv")
+
+    CLASS_NAMES = ["CBB", "CBSD", "CGM", "CMD", "Healthy"]
+    # weight_list = weight_class(train_df)
+    # LOGGER.info(f"Weight list for classes: {weight_list}")
 
     LOGGER.info("Splitting data for training and validation...")
     X_train, X_val, y_train, y_val = train_test_split(
@@ -97,21 +119,52 @@ def main():
         drop_last=False,
     )
 
+    # Show batch to see the effect of augmentations
+    if save_single_batch:
+        LOGGER.info("Creating dir to save samples of a batch...")
+        path_to_figs = os.path.join(logger_path, "batch_figs")
+        os.makedirs(path_to_figs)
+        LOGGER.info("Saving figures of a single batch...")
+        save_batch(train_loader, CLASS_NAMES, path_to_figs, CFG)
+        LOGGER.info("Figures have been saved!")
+
     # ====================================================
     # model & optimizer
     # ====================================================
-    model = timm.create_model(CFG.model_name, pretrained=True, num_classes=CFG.target_size)
+    model = CustomModel(CFG.model_name, pretrained=True)
     model.to(device)
 
     LOGGER.info(f"Model name {CFG.model_name}")
     LOGGER.info(f"Batch size {CFG.batch_size}")
+    LOGGER.info(f"Input size {CFG.size}")
 
     optimizer = Adam(model.parameters(), lr=CFG.lr)
-
+    # optimizer = SGD(model.parameters(), lr=CFG.lr, momentum=CFG.momentum)
+    # scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, "max", patience=5)
+    # scheduler = torch.optim.lr_scheduler.OneCycleLR(
+    #    optimizer, max_lr=0.1, steps_per_epoch=len(train_loader), epochs=CFG.epochs
+    # )
+    # scheduler = torch.optim.lr_scheduler.CyclicLR(
+    # optimizer, base_lr=0.001, max_lr=0.01, mode="triangular2", step_size_up=2138
+    # )
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(
+        optimizer, T_0=1, T_mult=2, eta_min=0.001, verbose=True
+    )
     # ====================================================
     # loop
     # ====================================================
-    criterion = nn.CrossEntropyLoss()
+    criterion = get_criterion()
+    # criterion = nn.CrossEntropyLoss()
+    LOGGER.info(f"Select {CFG.criterion} criterion")
+
+    if find_lr:
+        print("Finding oprimal learning rate...")
+        # Add this line before running `LRFinder`
+        lr_finder = LRFinder(model, optimizer, criterion, device="cuda", log_path=logger_path)
+        lr_finder.range_test(train_loader, end_lr=100, num_iter=100)
+        lr_finder.plot()  # to inspect the loss-learning rate graph
+        lr_finder.reset()  # to reset the model and optimizer to their initial state
+        print("Optimal learning rate has been found!")
 
     best_epoch = 0
     best_acc_score = 0.0
@@ -130,7 +183,9 @@ def main():
         start_time = time.time()
 
         # train
-        avg_train_loss, train_acc = train_fn(train_loader, model, criterion, optimizer, scaler, epoch, device)
+        avg_train_loss, train_acc = train_fn(
+            train_loader, model, criterion, optimizer, scaler, epoch, device, scheduler
+        )
 
         # eval
         avg_val_loss, val_preds = valid_fn(valid_loader, model, criterion, device)
@@ -140,6 +195,11 @@ def main():
         val_acc_score = get_score(valid_labels, val_preds.argmax(1), metric="accuracy")
         val_f1_score = get_score(valid_labels, val_preds.argmax(1), metric="f1_score")
 
+        cur_lr = optimizer.param_groups[0]["lr"]
+        # scheduler.step(val_acc_score)
+        LOGGER.info(f"Current learning rate: {cur_lr}")
+
+        tb.add_scalar("Learning rate", cur_lr, epoch + 1)
         tb.add_scalar("Train Loss", avg_train_loss, epoch + 1)
         tb.add_scalar("Train accuracy", train_acc, epoch + 1)
         tb.add_scalar("Val Loss", avg_val_loss, epoch + 1)
@@ -158,11 +218,11 @@ def main():
         best_f1_bool = False
 
         # Update best score
-        if val_acc_score > best_acc_score:
+        if val_acc_score >= best_acc_score:
             best_acc_score = val_acc_score
             best_acc_bool = True
 
-        if val_f1_score > best_f1_score:
+        if val_f1_score >= best_f1_score:
             best_f1_score = val_f1_score
             best_f1_bool = True
 
@@ -176,7 +236,7 @@ def main():
                 os.path.join(
                     logger_path,
                     "weights",
-                    f"{CFG.model_name}_epoch{epoch+1}_best.pth",
+                    "best.pth",
                 ),
             )
             best_epoch = epoch + 1
@@ -188,7 +248,25 @@ def main():
         # Early stopping
         if count_bad_epochs > CFG.early_stopping:
             LOGGER.info(f"Stop the training, since the score has not improved for {CFG.early_stopping} epochs!")
+            torch.save(
+                {"model": model.state_dict(), "preds": val_preds},
+                os.path.join(
+                    logger_path,
+                    "weights",
+                    f"{CFG.model_name}_epoch{epoch+1}_last.pth",
+                ),
+            )
             break
+        elif epoch + 1 == CFG.epochs:
+            LOGGER.info(f"Reached the final {epoch+1} epoch!")
+            torch.save(
+                {"model": model.state_dict(), "preds": val_preds},
+                os.path.join(
+                    logger_path,
+                    "weights",
+                    f"{CFG.model_name}_epoch{epoch+1}_final.pth",
+                ),
+            )
 
     LOGGER.info(
         f"AFTER TRAINING: Epoch {best_epoch}: Best Accuracy: {best_acc_score:.4f} - \

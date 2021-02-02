@@ -5,10 +5,10 @@ import torch
 from tqdm import tqdm
 
 from config import CFG
-from utils.utils import AverageMeter, get_score, timeSince
+from utils.utils import AverageMeter, timeSince
 
 
-def train_fn(train_loader, model, criterion, optimizer, scaler, epoch, device):
+def train_fn(train_loader, model, criterion, optimizer, scaler, epoch, device, scheduler=None):
     batch_time = AverageMeter()
     data_time = AverageMeter()
     losses = AverageMeter()
@@ -47,6 +47,10 @@ def train_fn(train_loader, model, criterion, optimizer, scaler, epoch, device):
             # Compute gradients and do step
             loss.backward()
             optimizer.step()
+        # print("Current LR:", optimizer.param_groups[0]["lr"])
+        if scheduler is not None:
+            # scheduler.step()
+            scheduler.step(epoch + i / len(train_loader))
 
         # record loss
         losses.update(loss.item(), batch_size)

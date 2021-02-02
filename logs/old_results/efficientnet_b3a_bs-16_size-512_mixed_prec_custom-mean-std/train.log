@@ -1,0 +1,38 @@
+Reading data...
+Splitting data for training and validation...
+train shape:
+(17117, 2)
+valid shape:
+(4280, 2)
+train fold:
+label
+0      870
+1     1751
+2     1909
+3    10526
+4     2061
+dtype: int64
+validation fold:
+label
+0     217
+1     438
+2     477
+3    2632
+4     516
+dtype: int64
+Model name efficientnet_b3a
+Batch size 16
+Input size 512
+Enabling mixed precision for training...
+Epoch 1 - avg_train_loss: 0.5250             avg_val_loss: 0.4322  time: 304s
+Epoch 1 - Accuracy: 0.8521028037383177 - F1-score 0.8553195249426567
+Epoch 1 - Save Best Accuracy: 0.8521 -                 Save Best F1-score: 0.8553 Model
+Number of bad epochs 0
+Epoch 2 - avg_train_loss: 0.4009             avg_val_loss: 0.4255  time: 312s
+Epoch 2 - Accuracy: 0.8607476635514019 - F1-score 0.8598228927411442
+Epoch 2 - Save Best Accuracy: 0.8607 -                 Save Best F1-score: 0.8598 Model
+Number of bad epochs 0
+Epoch 3 - avg_train_loss: 0.3455             avg_val_loss: 0.4126  time: 313s
+Epoch 3 - Accuracy: 0.8689252336448599 - F1-score 0.866524132576271
+Epoch 3 - Save Best Accuracy: 0.8689 -                 Save Best F1-score: 0.8665 Model
+Number of bad epochs 0

@@ -12,27 +12,52 @@ class CFG:
     seed = 42
     target_size = 5
     target_col = "label"
-    trn_fold = [0, 1, 2, 3, 4]
-    train = True
-    inference = False
 
     # Train configs
     MIXED_PREC = True  # Flag for mixed precision training
     debug = False
     epochs = 50
-    early_stopping = 5
-    model_name = "vit_base_patch16_224"
+    early_stopping = 10
+    model_name = "efficientnet_b3a"
     batch_size = 16
-    size = 224
+    size = 512
+    MEAN = [0.485, 0.456, 0.406]  # ImageNet values
+    STD = [0.229, 0.224, 0.225]  # ImageNet values
     num_workers = 8
     print_freq = 100
 
     # Optimizer config
-    lr = 1e-3
+    lr = 1e-2
+    momentum = 0.9
     min_lr = 1e-6
     weight_decay = 1e-6
     gradient_accumulation_steps = 1
     max_grad_norm = 1000
+
+    # Criterion config
+    # Cross-Entropy loss
+    # criterion = "CrossEntropyLoss"
+
+    # Label smoothing
+    criterion = "LabelSmoothing"
+    smooth_alpha = 0.4
+
+    # Bi-Tempered Loss
+    # criterion = "Bi-TemperedLoss"
+    T1 = 0.5
+    T2 = 1.0
+
+    # FocalLoss
+    # criterion = "FocalLoss"
+    gamma = 2
+
+    # FocalCosineLoss
+    # criterion = "FocalCosineLoss"
+
+    # Symmetric Cross-Entropy Loss
+    # criterion = "SymmetricCrossEntropyLoss"
+    alpha = 0.1
+    beta = 1.0
 
 
 if CFG.debug:
