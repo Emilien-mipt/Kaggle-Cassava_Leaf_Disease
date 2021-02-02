@@ -7,7 +7,11 @@ import torch
 import torch.nn as nn
 from sklearn.model_selection import train_test_split
 from torch.optim import SGD, Adam
-from torch.optim.lr_scheduler import OneCycleLR, ReduceLROnPlateau
+from torch.optim.lr_scheduler import (
+    CosineAnnealingWarmRestarts,
+    OneCycleLR,
+    ReduceLROnPlateau,
+)
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 from torch_lr_finder import LRFinder
@@ -64,8 +68,8 @@ def main():
     train_df = pd.read_csv("./data/cassava-leaf-disease-classification/train.csv")
 
     CLASS_NAMES = ["CBB", "CBSD", "CGM", "CMD", "Healthy"]
-    weight_list = weight_class(train_df)
-    LOGGER.info(f"Weight list for classes: {weight_list}")
+    # weight_list = weight_class(train_df)
+    # LOGGER.info(f"Weight list for classes: {weight_list}")
 
     LOGGER.info("Splitting data for training and validation...")
     X_train, X_val, y_train, y_val = train_test_split(
@@ -136,12 +140,15 @@ def main():
 
     # optimizer = Adam(model.parameters(), lr=CFG.lr)
     optimizer = SGD(model.parameters(), lr=CFG.lr, momentum=CFG.momentum)
-    # scheduler = ReduceLROnPlateau(optimizer, "max", patience=5)
+    # scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, "max", patience=5)
     # scheduler = torch.optim.lr_scheduler.OneCycleLR(
     #    optimizer, max_lr=0.1, steps_per_epoch=len(train_loader), epochs=CFG.epochs
     # )
-    scheduler = torch.optim.lr_scheduler.CyclicLR(
-        optimizer, base_lr=0.001, max_lr=0.1, mode="triangular", step_size_up=2138
+    # scheduler = torch.optim.lr_scheduler.CyclicLR(
+    #    optimizer, base_lr=0.001, max_lr=0.1, mode="triangular", step_size_up=2138
+    # )
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(
+        optimizer, T_0=1, T_mult=2, eta_min=0.001, verbose=True
     )
     # ====================================================
     # loop
@@ -190,7 +197,7 @@ def main():
 
         cur_lr = optimizer.param_groups[0]["lr"]
         # scheduler.step(val_acc_score)
-        # LOGGER.info(f"Current learning rate: {cur_lr}")
+        LOGGER.info(f"Current learning rate: {cur_lr}")
 
         tb.add_scalar("Learning rate", cur_lr, epoch + 1)
         tb.add_scalar("Train Loss", avg_train_loss, epoch + 1)

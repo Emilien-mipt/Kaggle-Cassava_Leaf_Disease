@@ -103,5 +103,4 @@ def weight_class(data_df):
         count_classes.append(count_class)
     min_class = min(count_classes)
     weight_tensor = min_class / np.array(count_classes)
-    print("Weight list: ", weight_tensor)
     return weight_tensor
