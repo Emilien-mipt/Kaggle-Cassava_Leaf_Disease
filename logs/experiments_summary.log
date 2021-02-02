@@ -25,3 +25,11 @@ Scores: Local = 0.8942, Public=0.893
 Scores: Local = 0.8888
 10) Baseline + label_smoothing loss (alpha=0.4) + SGD + Cosine Annealing with warm restarts, T_0=1, T_mult=2, eta_min=0.001
 Scores: Local = 0.8944, Public = 0.892
+11) Baseline + label_smoothing loss (alpha=0.4) + Adam + Cosine Annealing with warm restarts, T_0=1, T_mult=2, eta_min=0.001
+Scores: Local = 0.8537
+
+New best baseline:
+Batch_size=16; input_size=512;
+Augs: Train - RandomResizedCrop; Transpose; HV_Flips; Valid - CenterCrop
+Loss: label_smoothing loss (alpha=0.4)
+Optimizer: SGD + CyclicLR schedule with mode=trangular2, base_lr=0.001 and max_lr=0.1
