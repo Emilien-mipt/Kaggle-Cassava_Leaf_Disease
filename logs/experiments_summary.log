@@ -33,3 +33,7 @@ Batch_size=16; input_size=512;
 Augs: Train - RandomResizedCrop; Transpose; HV_Flips; Valid - CenterCrop
 Loss: label_smoothing loss (alpha=0.4)
 Optimizer: SGD + CyclicLR schedule with mode=trangular2, base_lr=0.001 and max_lr=0.1
+
+### Try new augs ###
+12) New baseline + Shift-Scale_Rotate aug
+Scores: Local = 0.8953; Public = 0.886
