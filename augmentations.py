@@ -4,6 +4,7 @@ from albumentations import (
     HorizontalFlip,
     Normalize,
     RandomResizedCrop,
+    RandomRotate90,
     Resize,
     ShiftScaleRotate,
     Transpose,
@@ -24,14 +25,7 @@ def get_transforms(*, data):
             [
                 # Resize(CFG.size, CFG.size, p=1.0),
                 RandomResizedCrop(CFG.size, CFG.size, p=1.0),
-                ShiftScaleRotate(
-                    p=0.5,
-                    shift_limit=(-0.3, 0.3),
-                    scale_limit=(-0.1, 0.1),
-                    rotate_limit=(-180, 180),
-                    interpolation=0,
-                    border_mode=4,
-                ),
+                RandomRotate90(p=0.5),
                 Transpose(p=0.5),
                 HorizontalFlip(p=0.5),
                 VerticalFlip(p=0.5),
