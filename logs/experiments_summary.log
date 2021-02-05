@@ -41,3 +41,5 @@ Scores: Local = 0.8953; Public = 0.886
 Score: Local = 0.8942, Public = 0.887
 14) New baseline + Random-Brightness-Contrast
 Score: Local = 0.8946, Public = 0.892
+15) New baseline + Coarsedropout + Cutout
+Score: Local = 0.8942, Public = 0.892
