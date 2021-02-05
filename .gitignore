@@ -3,6 +3,7 @@
 
 # virtual environment
 /cassava_venv
+/cassava_venv_cuda11
 
 # Pycharm cache
 .idea/
