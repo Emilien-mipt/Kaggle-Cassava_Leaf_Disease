@@ -8,7 +8,7 @@ class CFG:
     OUTPUT_DIR = "./logs"
 
     # Main config
-    GPU_ID = 1
+    GPU_ID = 0
     seed = 42
     target_size = 5
     target_col = "label"

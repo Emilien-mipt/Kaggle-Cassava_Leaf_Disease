@@ -39,3 +39,5 @@ Optimizer: SGD + CyclicLR schedule with mode=trangular2, base_lr=0.001 and max_l
 Scores: Local = 0.8953; Public = 0.886
 13) New baseline + Random-Rotate_90 aug
 Score: Local = 0.8942, Public = 0.887
+14) New baseline + Random-Brightness-Contrast
+Score: Local = 0.8946, Public = 0.892

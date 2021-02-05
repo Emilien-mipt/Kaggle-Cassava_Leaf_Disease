@@ -3,6 +3,7 @@ from albumentations import (
     Compose,
     HorizontalFlip,
     Normalize,
+    RandomBrightnessContrast,
     RandomResizedCrop,
     RandomRotate90,
     Resize,
@@ -25,7 +26,7 @@ def get_transforms(*, data):
             [
                 # Resize(CFG.size, CFG.size, p=1.0),
                 RandomResizedCrop(CFG.size, CFG.size, p=1.0),
-                RandomRotate90(p=0.5),
+                RandomBrightnessContrast(p=0.5, brightness_limit=(-0.1, 0.1), contrast_limit=(-0.1, 0.1), brightness_by_max=False),
                 Transpose(p=0.5),
                 HorizontalFlip(p=0.5),
                 VerticalFlip(p=0.5),
