@@ -43,3 +43,5 @@ Score: Local = 0.8942, Public = 0.887
 Score: Local = 0.8946, Public = 0.892
 15) New baseline + Coarsedropout + Cutout
 Score: Local = 0.8942, Public = 0.892
+16) New baseline + combination of augs (Shift-Scale_Rotate + Random-Brightness-Contrast + Coarsedropout + Cutout) + cuda11:
+Scores: Local = 0.8958, Public = 0.891
