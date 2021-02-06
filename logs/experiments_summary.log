@@ -33,6 +33,8 @@ Batch_size=16; input_size=512;
 Augs: Train - RandomResizedCrop; Transpose; HV_Flips; Valid - CenterCrop
 Loss: label_smoothing loss (alpha=0.4)
 Optimizer: SGD + CyclicLR schedule with mode=trangular2, base_lr=0.001 and max_lr=0.1
+Cuda 10.2: Scores: Local = 0.8942, Public=0.893
+Cuda 11: Local = 0.8930, Public = 0.889
 
 ### Try new augs ###
 12) New baseline + Shift-Scale_Rotate aug
@@ -44,4 +46,11 @@ Score: Local = 0.8946, Public = 0.892
 15) New baseline + Coarsedropout + Cutout
 Score: Local = 0.8942, Public = 0.892
 16) New baseline + combination of augs (Shift-Scale_Rotate + Random-Brightness-Contrast + Coarsedropout + Cutout) + cuda11:
+Scores: Local = 0.8958, Public = 0.891
+
+Baseline without augs:
+With CUDA 10.2: Local = 0.8942, Public=0.893
+With CUDA 11: Local = 0.8930, Public = 0.889
+
+Baseline + combination of augs + CUDA11:
 Scores: Local = 0.8958, Public = 0.891
