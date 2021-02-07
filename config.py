@@ -29,7 +29,7 @@ class CFG:
     # Optimizer config
     lr = 1e-1
     momentum = 0.9
-    min_lr = 1e-6
+    min_lr = 1e-3
     weight_decay = 1e-6
     gradient_accumulation_steps = 1
     max_grad_norm = 1000

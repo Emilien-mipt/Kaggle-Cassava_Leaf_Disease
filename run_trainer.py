@@ -139,9 +139,9 @@ def main():
     LOGGER.info(f"Input size {CFG.size}")
 
     # optimizer = Adam(model.parameters(), lr=CFG.lr)
-    optimizer = SGD(model.parameters(), lr=CFG.lr, momentum=CFG.momentum)
+    optimizer = SGD(model.parameters(), lr=CFG.lr, momentum=CFG.momentum, weight_decay=CFG.weight_decay)
     scheduler = torch.optim.lr_scheduler.CyclicLR(
-        optimizer, base_lr=0.001, max_lr=0.1, mode="triangular2", step_size_up=2138
+        optimizer, base_lr=CFG.min_lr, max_lr=CFG.lr, mode="triangular2", step_size_up=2138
     )
     # scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(
     #    optimizer, T_0=1, T_mult=2, eta_min=0.001, verbose=True

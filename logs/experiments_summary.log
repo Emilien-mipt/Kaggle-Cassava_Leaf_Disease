@@ -53,4 +53,17 @@ With CUDA 10.2: Local = 0.8942, Public=0.893
 With CUDA 11: Local = 0.8930, Public = 0.889
 
 Baseline + combination of augs + CUDA11:
-Scores: Local = 0.8958, Public = 0.891
+With CUDA 10.2: Scores: Local = 0.8944
+With CUDA 11: Scores: Local = 0.8958, Public = 0.891
+
+### Weight decay ###
+Cuda 11:
+Baseline + augs + weight_decay:
+17) weight_decay = 1e-3
+Score: Local = 0.8659
+18) weight_decay = 1e-4
+Score: Local = 0.8979
+19) weight_decay = 1e-5
+Score: Local = 0.8995, Public = 0.891
+20) weight_decay = 1e-6
+Score: Local = 0.8960
