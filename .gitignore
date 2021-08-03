@@ -1,0 +1,16 @@
+# data
+/data
+
+# virtual environment
+/cassava_venv
+/cassava_venv_cuda11
+
+# Pycharm cache
+.idea/
+__pycache__/
+
+# weights
+**/weights/
+
+# mypy cache
+.mypy_cache/
