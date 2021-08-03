@@ -1,0 +1,93 @@
+Reading data...
+Splitting data for training and validation...
+train shape:
+(17117, 2)
+valid shape:
+(4280, 2)
+train fold:
+label
+0      870
+1     1751
+2     1909
+3    10526
+4     2061
+dtype: int64
+validation fold:
+label
+0     217
+1     438
+2     477
+3    2632
+4     516
+dtype: int64
+Model name efficientnet_b3a
+Batch size 16
+Input size 512
+Select LabelSmoothing criterion
+Enabling mixed precision for training...
+Current learning rate: 0.0505
+Epoch 1 - avg_train_loss: 1.3801             avg_val_loss: 1.3247  time: 293s
+Epoch 1 - Accuracy: 0.8623831775700934 - F1-score 0.8608543810122011
+Epoch 1 - Save Best Accuracy: 0.8624 -                 Save Best F1-score: 0.8609 Model
+Number of bad epochs 0
+Current learning rate: 0.1
+Epoch 2 - avg_train_loss: 1.3404             avg_val_loss: 1.3190  time: 300s
+Epoch 2 - Accuracy: 0.8728971962616823 - F1-score 0.8690135488768681
+Epoch 2 - Save Best Accuracy: 0.8729 -                 Save Best F1-score: 0.8690 Model
+Number of bad epochs 0
+Current learning rate: 0.0505
+Epoch 3 - avg_train_loss: 1.3267             avg_val_loss: 1.3090  time: 301s
+Epoch 3 - Accuracy: 0.8824766355140187 - F1-score 0.8806991983336228
+Epoch 3 - Save Best Accuracy: 0.8825 -                 Save Best F1-score: 0.8807 Model
+Number of bad epochs 0
+Current learning rate: 0.001
+Epoch 4 - avg_train_loss: 1.3141             avg_val_loss: 1.3012  time: 301s
+Epoch 4 - Accuracy: 0.8943925233644859 - F1-score 0.8924434521932073
+Epoch 4 - Save Best Accuracy: 0.8944 -                 Save Best F1-score: 0.8924 Model
+Number of bad epochs 0
+Current learning rate: 0.025750000000000002
+Epoch 5 - avg_train_loss: 1.3085             avg_val_loss: 1.3029  time: 301s
+Epoch 5 - Accuracy: 0.8904205607476635 - F1-score 0.8890674183116924
+Number of bad epochs 1
+Current learning rate: 0.0505
+Epoch 6 - avg_train_loss: 1.3132             avg_val_loss: 1.3213  time: 301s
+Epoch 6 - Accuracy: 0.8864485981308411 - F1-score 0.8855286863109442
+Number of bad epochs 2
+Current learning rate: 0.025750000000000002
+Epoch 7 - avg_train_loss: 1.3122             avg_val_loss: 1.3042  time: 301s
+Epoch 7 - Accuracy: 0.8904205607476635 - F1-score 0.889665120829904
+Number of bad epochs 3
+Current learning rate: 0.001
+Epoch 8 - avg_train_loss: 1.3036             avg_val_loss: 1.3921  time: 301s
+Epoch 8 - Accuracy: 0.8883177570093458 - F1-score 0.8879694117782555
+Number of bad epochs 4
+Current learning rate: 0.013375000000000001
+Epoch 9 - avg_train_loss: 1.2996             avg_val_loss: 1.4293  time: 301s
+Epoch 9 - Accuracy: 0.8871495327102804 - F1-score 0.8868754886929869
+Number of bad epochs 5
+Current learning rate: 0.025750000000000002
+Epoch 10 - avg_train_loss: 1.3042             avg_val_loss: 1.3099  time: 301s
+Epoch 10 - Accuracy: 0.8899532710280373 - F1-score 0.8892090825189931
+Number of bad epochs 6
+Current learning rate: 0.013375000000000001
+Epoch 11 - avg_train_loss: 1.3008             avg_val_loss: 1.8176  time: 301s
+Epoch 11 - Accuracy: 0.883177570093458 - F1-score 0.8818387019695655
+Number of bad epochs 7
+Current learning rate: 0.001
+Epoch 12 - avg_train_loss: 1.2981             avg_val_loss: 1.5196  time: 301s
+Epoch 12 - Accuracy: 0.8873831775700934 - F1-score 0.8870222076726667
+Number of bad epochs 8
+Current learning rate: 0.0071875
+Epoch 13 - avg_train_loss: 1.2948             avg_val_loss: 1.4600  time: 301s
+Epoch 13 - Accuracy: 0.8876168224299066 - F1-score 0.8866526540651891
+Number of bad epochs 9
+Current learning rate: 0.013375000000000001
+Epoch 14 - avg_train_loss: 1.2971             avg_val_loss: 1.4372  time: 302s
+Epoch 14 - Accuracy: 0.8873831775700934 - F1-score 0.8872895772596867
+Number of bad epochs 10
+Current learning rate: 0.0071875
+Epoch 15 - avg_train_loss: 1.2972             avg_val_loss: 1.3754  time: 301s
+Epoch 15 - Accuracy: 0.888785046728972 - F1-score 0.8873981265545042
+Number of bad epochs 11
+Stop the training, since the score has not improved for 10 epochs!
+AFTER TRAINING: Epoch 4: Best Accuracy: 0.8944 -                 Best F1-score: 0.8924

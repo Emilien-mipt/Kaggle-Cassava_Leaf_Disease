@@ -50,7 +50,7 @@ def train_fn(train_loader, model, criterion, optimizer, scaler, epoch, device, s
         # print("Current LR:", optimizer.param_groups[0]["lr"])
         if scheduler is not None:
             # scheduler.step()
-            scheduler.step(epoch + i / len(train_loader))
+            scheduler.step()
 
         # record loss
         losses.update(loss.item(), batch_size)

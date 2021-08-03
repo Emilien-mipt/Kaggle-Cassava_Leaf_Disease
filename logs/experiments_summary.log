@@ -19,9 +19,9 @@ Scores: Local = 0.8886, Public = 0.888
 Scores: Local = 0.8862, Public = 0.888
 7) Baseline + label_smoothing loss (alpha=0.4) + SGD + CyclicLR schedule with mode=exp with iter=2000, gamma=0.9, base_lr=0.001 and max_lr=0.1
 Scores: Local = 0.8867
-8) Baseline + label_smoothing loss (alpha=0.4) + SGD + CyclicLR schedule with mode=trangular2, base_lr=0.001 and max_lr=0.1
+8) Baseline + label_smoothing loss (alpha=0.4) + SGD + CyclicLR schedule with mode=triangular2, base_lr=0.001 and max_lr=0.1
 Scores: Local = 0.8942, Public=0.893
-9) Baseline + label_smoothing loss (alpha=0.4) + SGD + CyclicLR schedule with mode=trangular, base_lr=0.001 and max_lr=0.1
+9) Baseline + label_smoothing loss (alpha=0.4) + SGD + CyclicLR schedule with mode=triangular, base_lr=0.001 and max_lr=0.1
 Scores: Local = 0.8888
 10) Baseline + label_smoothing loss (alpha=0.4) + SGD + Cosine Annealing with warm restarts, T_0=1, T_mult=2, eta_min=0.001
 Scores: Local = 0.8944, Public = 0.892
@@ -32,4 +32,44 @@ New best baseline:
 Batch_size=16; input_size=512;
 Augs: Train - RandomResizedCrop; Transpose; HV_Flips; Valid - CenterCrop
 Loss: label_smoothing loss (alpha=0.4)
-Optimizer: SGD + CyclicLR schedule with mode=trangular2, base_lr=0.001 and max_lr=0.1
+Optimizer: SGD + CyclicLR schedule with mode=triangular2, base_lr=0.001 and max_lr=0.1
+Cuda 10.2: Scores: Local = 0.8942, Public=0.893
+Cuda 11: Local = 0.8930, Public = 0.889
+
+### Try new augs ###
+12) New baseline + Shift-Scale_Rotate aug
+Scores: Local = 0.8953; Public = 0.886
+13) New baseline + Random-Rotate_90 aug
+Score: Local = 0.8942, Public = 0.887
+14) New baseline + Random-Brightness-Contrast
+Score: Local = 0.8946, Public = 0.892
+15) New baseline + Coarsedropout + Cutout
+Score: Local = 0.8942, Public = 0.892
+16) New baseline + combination of augs (Shift-Scale_Rotate + Random-Brightness-Contrast + Coarsedropout + Cutout) + cuda11:
+Scores: Local = 0.8958, Public = 0.891
+
+Baseline without augs:
+With CUDA 10.2: Local = 0.8942, Public=0.893
+With CUDA 11: Local = 0.8930, Public = 0.889
+
+Baseline + combination of augs:
+With CUDA 10.2: Scores: Local = 0.8944, Public = 0.886
+With CUDA 11: Scores: Local = 0.8958, Public = 0.891
+
+### Weight decay ###
+Cuda 11:
+Baseline + augs + weight_decay:
+17) weight_decay = 1e-3
+Score: Local = 0.8659
+18) weight_decay = 1e-4
+Score: Local = 0.8979
+19) weight_decay = 1e-5
+Score: Local = 0.8995, Public = 0.891
+20) weight_decay = 1e-6
+Score: Local = 0.8960
+
+New best baseline:
+Batch_size=16; input_size=512;
+Label smoothing with alpha=0.4
+Augs: Train - RandomResizedCrop, Transpose, HV_Flips, Shift-Scale_Rotate, Random-Brightness-Contrast, Coarsedropout + Cutout ;Valid - CenterCrop
+Optimizer: SGD with Cyclic LR scheduler, mode=triangular2, base_lr = 1e-3, max_lr = 1e-1; weight decay = 1e-5
