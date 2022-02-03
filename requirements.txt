@@ -10,4 +10,5 @@ sklearn
 tensorboard
 timm
 torch
+torch-lr-finder
 tqdm
