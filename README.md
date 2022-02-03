@@ -9,6 +9,9 @@ In this competition, we introduce a dataset of 21,367 labeled images collected d
 
 The task is to classify each cassava image into four disease categories or a fifth category indicating a healthy leaf. With your help, farmers may be able to quickly identify diseased plants, potentially saving their crops before they inflict irreparable damage.
 
+![2216849948](https://user-images.githubusercontent.com/44554040/152436810-b938884a-e60c-40e6-9920-5ebd48975521.jpg)
+*Example of the image in the test set*
+
 ## Code structure
 This repository introduces the baseline that was developed to solve the Kaggle competition
 "Cassava Leaf Disease Classification". Though the code was written for solving the competition, due to the universality
@@ -18,7 +21,7 @@ The structure goes as follows:
 #### Config file
 All the settings (data paths and train parameters) are set in `CFG` class, which is located in `config.py` file.
 
-### Model
+#### Model
 The baseline is pretty straight-forward: the computer vision model is being
 set via the [PyTorch Image Models](https://pypi.org/project/timm/) library and the last classifier layer is changed according to the
 number of output classes (In our case it is 5). The model is set in `model.py` file, while the type of the
