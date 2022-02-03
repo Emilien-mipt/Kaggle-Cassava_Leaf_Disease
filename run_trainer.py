@@ -4,7 +4,6 @@ import time
 
 import pandas as pd
 import torch
-import torch.nn as nn
 from sklearn.model_selection import train_test_split
 from torch.optim import SGD
 from torch.utils.data import DataLoader
@@ -60,7 +59,7 @@ def main():
     seed_torch(seed=CFG.seed)
 
     LOGGER.info("Reading data...")
-    train_df = pd.read_csv("./data/cassava-leaf-disease-classification/train.csv")
+    train_df = pd.read_csv(CFG.TRAIN_CSV)
 
     CLASS_NAMES = ["CBB", "CBSD", "CGM", "CMD", "Healthy"]
 
@@ -75,6 +74,11 @@ def main():
     )
 
     train_fold = pd.concat([X_train, y_train], axis=1)
+
+    if CFG.debug:
+        CFG.epochs = 1
+        train_fold = train_fold.sample(n=1000, random_state=CFG.seed).reset_index(drop=True)
+
     LOGGER.info("train shape: ")
     LOGGER.info(train_fold.shape)
     valid_fold = pd.concat([X_val, y_val], axis=1)
@@ -91,6 +95,8 @@ def main():
     # ====================================================
 
     device = torch.device(f"cuda:{CFG.GPU_ID}")
+
+    print(device)
 
     train_dataset = TrainDataset(train_fold, transform=get_transforms(data="train"))
     valid_dataset = TrainDataset(valid_fold, transform=get_transforms(data="valid"))

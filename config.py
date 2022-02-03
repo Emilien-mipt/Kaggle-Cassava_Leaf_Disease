@@ -4,18 +4,19 @@ import pandas as pd
 class CFG:
     # Data path
     TRAIN_PATH = "./data/cassava-leaf-disease-classification/train_images"
+    TRAIN_CSV = "./data/cassava-leaf-disease-classification/train.csv"
     TEST_PATH = "./data/cassava-leaf-disease-classification/test_images"
     OUTPUT_DIR = "./logs"
 
     # Main config
-    GPU_ID = 1
+    GPU_ID = 0
     seed = 42
     target_size = 5
     target_col = "label"
 
     # Train configs
     MIXED_PREC = True  # Flag for mixed precision training
-    debug = False
+    debug = True
     epochs = 50
     early_stopping = 10
     model_name = "efficientnet_b3a"
@@ -31,16 +32,8 @@ class CFG:
     momentum = 0.9
     min_lr = 1e-3
     weight_decay = 1e-6
-    gradient_accumulation_steps = 1
-    max_grad_norm = 1000
 
     # Criterion config
     # Label smoothing
     criterion = "LabelSmoothing"
     smooth_alpha = 0.4
-
-
-if CFG.debug:
-    CFG.epochs = 1
-    train_pd = pd.read_csv("../input/cassava-leaf-disease-classification/train.csv")
-    train = train_pd.sample(n=1000, random_state=CFG.seed).reset_index(drop=True)
