@@ -6,12 +6,7 @@ import pandas as pd
 import torch
 import torch.nn as nn
 from sklearn.model_selection import train_test_split
-from torch.optim import SGD, Adam
-from torch.optim.lr_scheduler import (
-    CosineAnnealingWarmRestarts,
-    OneCycleLR,
-    ReduceLROnPlateau,
-)
+from torch.optim import SGD
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 from torch_lr_finder import LRFinder
@@ -22,7 +17,7 @@ from model import CustomModel
 from train import train_fn, valid_fn
 from train_test_dataset import TrainDataset
 from utils.loss_functions import get_criterion
-from utils.utils import get_score, init_logger, save_batch, seed_torch, weight_class
+from utils.utils import get_score, init_logger, save_batch, seed_torch
 
 
 def main():
@@ -68,8 +63,6 @@ def main():
     train_df = pd.read_csv("./data/cassava-leaf-disease-classification/train.csv")
 
     CLASS_NAMES = ["CBB", "CBSD", "CGM", "CMD", "Healthy"]
-    # weight_list = weight_class(train_df)
-    # LOGGER.info(f"Weight list for classes: {weight_list}")
 
     LOGGER.info("Splitting data for training and validation...")
     X_train, X_val, y_train, y_val = train_test_split(
@@ -138,25 +131,21 @@ def main():
     LOGGER.info(f"Batch size {CFG.batch_size}")
     LOGGER.info(f"Input size {CFG.size}")
 
-    # optimizer = Adam(model.parameters(), lr=CFG.lr)
     optimizer = SGD(model.parameters(), lr=CFG.lr, momentum=CFG.momentum, weight_decay=CFG.weight_decay)
     scheduler = torch.optim.lr_scheduler.CyclicLR(
         optimizer, base_lr=CFG.min_lr, max_lr=CFG.lr, mode="triangular2", step_size_up=2138
     )
-    # scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(
-    #    optimizer, T_0=1, T_mult=2, eta_min=0.001, verbose=True
-    # )
+
     # ====================================================
     # loop
     # ====================================================
     criterion = get_criterion()
-    # criterion = nn.CrossEntropyLoss()
     LOGGER.info(f"Select {CFG.criterion} criterion")
 
     if find_lr:
         print("Finding oprimal learning rate...")
         # Add this line before running `LRFinder`
-        lr_finder = LRFinder(model, optimizer, criterion, device="cuda", log_path=logger_path)
+        lr_finder = LRFinder(model, optimizer, criterion, device="cuda")
         lr_finder.range_test(train_loader, end_lr=100, num_iter=100)
         lr_finder.plot()  # to inspect the loss-learning rate graph
         lr_finder.reset()  # to reset the model and optimizer to their initial state
