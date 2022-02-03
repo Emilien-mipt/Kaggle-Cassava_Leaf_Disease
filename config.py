@@ -20,6 +20,7 @@ class CFG:
     epochs = 50
     early_stopping = 10
     model_name = "efficientnet_b3a"
+    pretrain = True
     batch_size = 16
     size = 512
     MEAN = [0.485, 0.456, 0.406]  # ImageNet values

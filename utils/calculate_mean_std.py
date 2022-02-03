@@ -9,6 +9,7 @@ TRAIN_CSV = "../data/cassava-leaf-disease-classification/train.csv"
 
 SIZE = 512
 
+
 def get_mean_std(train_df):
     sum_mean = 0.0
     sum_std = 0.0

@@ -130,7 +130,7 @@ def main():
     # ====================================================
     # model & optimizer
     # ====================================================
-    model = CustomModel(CFG.model_name, pretrained=True)
+    model = CustomModel(CFG.model_name, pretrained=CFG.pretrain)
     model.to(device)
 
     LOGGER.info(f"Model name {CFG.model_name}")
