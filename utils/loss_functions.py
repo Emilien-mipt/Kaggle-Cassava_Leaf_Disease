@@ -18,6 +18,7 @@ sys.path.insert(0, "..")
 
 
 def get_criterion():
+    criterion = None
     if CFG.criterion == "CrossEntropyLoss":
         criterion = nn.CrossEntropyLoss()
     elif CFG.criterion == "LabelSmoothing":
@@ -57,7 +58,7 @@ class LabelSmoothingLoss(nn.Module):
 # Bi-Tempered Loss
 # ====================================================
 class BiTemperedLogisticLoss(nn.Module):
-    def __init__(self, t1=CFG.T1, t2=CFG.T2, smoothing=0.0):
+    def __init__(self, t1=0.5, t2=1.0, smoothing=0.0):
         super().__init__()
         self.t1 = t1
         self.t2 = t2
@@ -76,7 +77,7 @@ class BiTemperedLogisticLoss(nn.Module):
 # Focal Loss
 # ====================================================
 class FocalLoss(nn.Module):
-    def __init__(self, alpha=1, gamma=CFG.gamma, reduce=True):
+    def __init__(self, alpha=1.0, gamma=2.0, reduce=True):
         super().__init__()
         self.alpha = alpha
         self.gamma = gamma
@@ -98,7 +99,7 @@ class FocalLoss(nn.Module):
 # Focal Cosine Loss
 # ====================================================
 class FocalCosineLoss(nn.Module):
-    def __init__(self, alpha=1, gamma=CFG.gamma, xent=0.1):
+    def __init__(self, alpha=1.0, gamma=2.0, xent=0.1):
         super().__init__()
         self.alpha = alpha
         self.gamma = gamma
@@ -126,7 +127,7 @@ class FocalCosineLoss(nn.Module):
 #  Symmetric Cross-Entropy Loss
 # ====================================================
 class SymmetricCrossEntropy(nn.Module):
-    def __init__(self, alpha=CFG.alpha, beta=CFG.beta, num_classes=CFG.target_size):
+    def __init__(self, alpha=0.1, beta=1.0, num_classes=CFG.target_size):
         super().__init__()
         self.alpha = alpha
         self.beta = beta
