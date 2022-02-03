@@ -7,8 +7,6 @@ from albumentations import (
     Normalize,
     RandomBrightnessContrast,
     RandomResizedCrop,
-    RandomRotate90,
-    Resize,
     ShiftScaleRotate,
     Transpose,
     VerticalFlip,
@@ -26,7 +24,6 @@ def get_transforms(*, data):
     if data == "train":
         return Compose(
             [
-                # Resize(CFG.size, CFG.size, p=1.0),
                 RandomResizedCrop(CFG.size, CFG.size, p=1.0),
                 RandomBrightnessContrast(
                     p=0.5, brightness_limit=(-0.1, 0.1), contrast_limit=(-0.1, 0.1), brightness_by_max=False
@@ -57,7 +54,6 @@ def get_transforms(*, data):
     elif data == "valid":
         return Compose(
             [
-                # Resize(CFG.size, CFG.size),
                 CenterCrop(CFG.size, CFG.size, p=1.0),
                 Normalize(
                     mean=CFG.MEAN,
