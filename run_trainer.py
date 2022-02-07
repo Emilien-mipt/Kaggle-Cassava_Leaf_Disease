@@ -67,7 +67,7 @@ def main():
     X_train, X_val, y_train, y_val = train_test_split(
         train_df.loc[:, train_df.columns != "label"],
         train_df["label"],
-        test_size=0.2,
+        test_size=CFG.test_size,
         random_state=CFG.seed,
         shuffle=True,
         stratify=train_df["label"],

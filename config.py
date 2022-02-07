@@ -17,6 +17,7 @@ class CFG:
     # Train configs
     MIXED_PREC = True  # Flag for mixed precision training
     debug = False
+    test_size = 0.2
     epochs = 50
     early_stopping = 10
     model_name = "efficientnet_b3a"
