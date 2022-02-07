@@ -4,14 +4,8 @@ import time
 
 import pandas as pd
 import torch
-import torch.nn as nn
 from sklearn.model_selection import train_test_split
-from torch.optim import SGD, Adam
-from torch.optim.lr_scheduler import (
-    CosineAnnealingWarmRestarts,
-    OneCycleLR,
-    ReduceLROnPlateau,
-)
+from torch.optim import SGD
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 from torch_lr_finder import LRFinder
@@ -22,7 +16,7 @@ from model import CustomModel
 from train import train_fn, valid_fn
 from train_test_dataset import TrainDataset
 from utils.loss_functions import get_criterion
-from utils.utils import get_score, init_logger, save_batch, seed_torch, weight_class
+from utils.utils import get_score, init_logger, save_batch, seed_torch
 
 
 def main():
@@ -65,23 +59,26 @@ def main():
     seed_torch(seed=CFG.seed)
 
     LOGGER.info("Reading data...")
-    train_df = pd.read_csv("./data/cassava-leaf-disease-classification/train.csv")
+    train_df = pd.read_csv(CFG.TRAIN_CSV)
 
     CLASS_NAMES = ["CBB", "CBSD", "CGM", "CMD", "Healthy"]
-    # weight_list = weight_class(train_df)
-    # LOGGER.info(f"Weight list for classes: {weight_list}")
 
     LOGGER.info("Splitting data for training and validation...")
     X_train, X_val, y_train, y_val = train_test_split(
         train_df.loc[:, train_df.columns != "label"],
         train_df["label"],
-        test_size=0.2,
+        test_size=CFG.test_size,
         random_state=CFG.seed,
         shuffle=True,
         stratify=train_df["label"],
     )
 
     train_fold = pd.concat([X_train, y_train], axis=1)
+
+    if CFG.debug:
+        CFG.epochs = 1
+        train_fold = train_fold.sample(n=1000, random_state=CFG.seed).reset_index(drop=True)
+
     LOGGER.info("train shape: ")
     LOGGER.info(train_fold.shape)
     valid_fold = pd.concat([X_val, y_val], axis=1)
@@ -98,6 +95,8 @@ def main():
     # ====================================================
 
     device = torch.device(f"cuda:{CFG.GPU_ID}")
+
+    print(device)
 
     train_dataset = TrainDataset(train_fold, transform=get_transforms(data="train"))
     valid_dataset = TrainDataset(valid_fold, transform=get_transforms(data="valid"))
@@ -131,32 +130,28 @@ def main():
     # ====================================================
     # model & optimizer
     # ====================================================
-    model = CustomModel(CFG.model_name, pretrained=True)
+    model = CustomModel(CFG.model_name, pretrained=CFG.pretrain)
     model.to(device)
 
     LOGGER.info(f"Model name {CFG.model_name}")
     LOGGER.info(f"Batch size {CFG.batch_size}")
     LOGGER.info(f"Input size {CFG.size}")
 
-    # optimizer = Adam(model.parameters(), lr=CFG.lr)
     optimizer = SGD(model.parameters(), lr=CFG.lr, momentum=CFG.momentum, weight_decay=CFG.weight_decay)
     scheduler = torch.optim.lr_scheduler.CyclicLR(
         optimizer, base_lr=CFG.min_lr, max_lr=CFG.lr, mode="triangular2", step_size_up=2138
     )
-    # scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(
-    #    optimizer, T_0=1, T_mult=2, eta_min=0.001, verbose=True
-    # )
+
     # ====================================================
     # loop
     # ====================================================
     criterion = get_criterion()
-    # criterion = nn.CrossEntropyLoss()
     LOGGER.info(f"Select {CFG.criterion} criterion")
 
     if find_lr:
         print("Finding oprimal learning rate...")
         # Add this line before running `LRFinder`
-        lr_finder = LRFinder(model, optimizer, criterion, device="cuda", log_path=logger_path)
+        lr_finder = LRFinder(model, optimizer, criterion, device="cuda")
         lr_finder.range_test(train_loader, end_lr=100, num_iter=100)
         lr_finder.plot()  # to inspect the loss-learning rate graph
         lr_finder.reset()  # to reset the model and optimizer to their initial state

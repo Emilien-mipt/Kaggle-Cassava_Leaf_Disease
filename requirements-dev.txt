@@ -1,17 +1,6 @@
-albumentations
+-r requirements.txt
+
 black
 flake8
-matplotlib
 mypy
-numpy
-opencv-python
-pandas
-pillow
 pre-commit
-scipy
-seaborn
-sklearn
-tensorboard
-timm
-torch
-tqdm

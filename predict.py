@@ -12,7 +12,7 @@ from train_test_dataset import TestDataset
 
 
 def predict(test_fold, state, device):
-    model = CustomModel(CFG.model_name, pretrained=False)
+    model = CustomModel(CFG.model_name, pretrained=False, num_classes=CFG.target_size)
     test_dataset = TestDataset(test_fold, transform=get_transforms(data="valid"))
     test_loader = DataLoader(
         test_dataset,
